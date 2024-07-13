@@ -11,12 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
-import sys
-sys.path.insert(0, '/kaggle/working/NeMo/nemo')  # Replace with the actual path to your cloned NeMo library
-
 from nemo.collections.asr.models.msdd_models import NeuralDiarizer
 from nemo.core.config import hydra_runner
-
+import nemo
 
 """
 Run the entire speaker diarization pipeline: VAD, clustering diarizer for initializing clustering then Multi-scale Diarization Decoder (MSDD).
@@ -32,6 +29,7 @@ python multiscale_diar_decoder_infer.py --config-path='../conf/inference' --conf
 @hydra_runner(config_path="../conf/inference", config_name="diar_infer_telephonic.yaml")
 def main(cfg):
     print("Legendary start the inferenec")
+    print(nemo.__file__)  
     diarizer_model = NeuralDiarizer(cfg=cfg).to(cfg.device)
     diarizer_model.diarize()
 
