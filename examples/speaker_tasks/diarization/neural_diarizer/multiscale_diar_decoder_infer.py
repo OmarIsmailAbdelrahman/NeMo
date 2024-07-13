@@ -11,6 +11,9 @@
 # WITHOUT WARRANTIES OR CONDITIONS OF ANY KIND, either express or implied.
 # See the License for the specific language governing permissions and
 # limitations under the License.
+import sys
+sys.path.insert(0, '/kaggle/working/NeMo/nemo')  # Ensure this is the absolute path to your cloned NeMo library
+
 from nemo.collections.asr.models.msdd_models import NeuralDiarizer
 from nemo.core.config import hydra_runner
 import nemo
