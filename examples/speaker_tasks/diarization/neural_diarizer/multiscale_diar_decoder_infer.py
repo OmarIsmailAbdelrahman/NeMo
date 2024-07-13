@@ -28,9 +28,9 @@ python multiscale_diar_decoder_infer.py --config-path='../conf/inference' --conf
 
 @hydra_runner(config_path="../conf/inference", config_name="diar_infer_telephonic.yaml")
 def main(cfg):
-    print("Legendary start the inferenec")
-    print(nemo.__file__)  
+    print("Legendary Configuration and class instanace NeuralDiarizer")
     diarizer_model = NeuralDiarizer(cfg=cfg).to(cfg.device)
+    print("Legendary start the inferenec")
     diarizer_model.diarize()
 
 
