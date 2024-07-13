@@ -1098,6 +1098,7 @@ class NeuralDiarizer(LightningModule):
             self.msdd_model = EncDecDiarLabelModel.from_pretrained(model_name=model_path, map_location=cfg.device)
         # Load speaker embedding model state_dict which is loaded from the MSDD checkpoint.
         if self.use_speaker_model_from_ckpt:
+            print("heeeeeeeeeeeeeeeerergae;glr,e \n \n \n rgaegraegreagreagaergaerbrtmbhkrtmbhi0rtmbiprtnbrtnbhatp")
             self._speaker_model = self.extract_standalone_speaker_model()
         else:
             self._speaker_model = None
