@@ -32,6 +32,7 @@ def main(cfg):
     diarizer_model = NeuralDiarizer(cfg=cfg).to(cfg.device)
     print("Legendary start the inferenec")
     diarizer_model.diarize()
+    print("Legendary Finished")
 
 
 if __name__ == '__main__':
