@@ -1182,11 +1182,23 @@ class NeuralDiarizer(LightningModule):
         Note that the result of MSDD can include multiple speakers at the same time. Therefore, RTTM output of MSDD needs to be based on `make_rttm_with_overlap()`
         function that can generate overlapping timestamps. `self.run_overlap_aware_eval()` function performs DER evaluation.
         """
+        print("Legendary clustering_embedding")
+        
         self.clustering_embedding.prepare_cluster_embs_infer()
+        
         self.msdd_model.pairwise_infer = True
+        
+        print("Legendary emb_clus")
+        
         self.get_emb_clus_infer(self.clustering_embedding)
+        
+        print("Legendary run_pairwise_diarization")
+        
         preds_list, targets_list, signal_lengths_list = self.run_pairwise_diarization()
+        
         thresholds = list(self._cfg.diarizer.msdd_model.parameters.sigmoid_threshold)
+
+        print("Legendary run_overlap_aware_eval")
         return [self.run_overlap_aware_eval(preds_list, threshold) for threshold in thresholds]
 
     def get_range_average(
