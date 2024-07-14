@@ -911,7 +911,7 @@ class ClusterEmbedding(torch.nn.Module):
             self.clus_diar_model.multiscale_embeddings_and_timestamps, self.clus_diar_model.multiscale_args_dict
         )
         print("Legendary-ClusteringDiarizer multiscale embedding and timestamps:", self.clus_diar_model.multiscale_embeddings_and_timestamps, "\n multiscale_args_dict: ", self.clus_diar_model.multiscale_args_dict)
-        print("Legendary-run_clustering_diarizer emvs and timestamps": self._embs_and_timestamps)
+        print("Legendary-run_clustering_diarizer emvs and timestamps: ", self._embs_and_timestamps)
         session_scale_mapping_dict = self.get_scale_map(self._embs_and_timestamps)
         
         emb_scale_seq_dict = self.load_emb_scale_seq_dict(emb_dir)
