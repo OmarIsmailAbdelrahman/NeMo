@@ -454,6 +454,7 @@ def perform_clustering(
         all_hypothesis (list[uniq_name,Annotation]): hypothesis annotations for score calculation
 
     """
+    print("Legendary-perform_clustering audio_RTTM_MAP", AUDIO_RTTM_MAP, " rttm output dir", out_rttm_dir, "Clustring parameters: ", clustering_params)
     all_hypothesis = []
     all_reference = []
     no_references = False
@@ -472,7 +473,8 @@ def perform_clustering(
 
     for uniq_id, audio_rttm_values in tqdm(AUDIO_RTTM_MAP.items(), desc='clustering', leave=True, disable=not verbose):
         uniq_embs_and_timestamps = embs_and_timestamps[uniq_id]
-
+        print("Legendary-perform_clustering uniq_id", uniq_id, "rttm values", audio_rttm_values)
+        
         if clustering_params.oracle_num_speakers:
             num_speakers = audio_rttm_values.get('num_speakers', None)
             if num_speakers is None:
@@ -481,7 +483,7 @@ def perform_clustering(
             num_speakers = -1
 
         base_scale_idx = uniq_embs_and_timestamps['multiscale_segment_counts'].shape[0] - 1
-
+        print("Legendary-perform_clustering base_scale_idx",base_scale_idx)
         cluster_labels = speaker_clustering.forward_infer(
             embeddings_in_scales=uniq_embs_and_timestamps['embeddings'],
             timestamps_in_scales=uniq_embs_and_timestamps['timestamps'],
@@ -507,6 +509,7 @@ def perform_clustering(
             raise ValueError("Mismatch of length between cluster_labels and timestamps.")
 
         labels, lines = generate_cluster_labels(timestamps, cluster_labels)
+        print("Legendary-perform_clustering base_scale_idx",base_scale_idx, " timestamps ", timestamps, "cluster_labels " , cluster_labels , " labels ", labels , "lines", lines)
 
         if out_rttm_dir:
             labels_to_rttmfile(labels, uniq_id, out_rttm_dir)
