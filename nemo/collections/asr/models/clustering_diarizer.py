@@ -203,7 +203,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         manifest_file (str) : Manifest file containing path to audio file and label as infer
 
         """
-
+        print("Legendary-ClusteringDiarizer running VAD")
         shutil.rmtree(self._vad_dir, ignore_errors=True)
         os.makedirs(self._vad_dir)
 
@@ -273,6 +273,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             num_workers=self._cfg.num_workers,
             out_dir=self._vad_dir,
         )
+        print("Legendary-ClusteringDiarizer creating vad segment table in: ",table_out_dir)
 
         AUDIO_VAD_RTTM_MAP = {}
         for key in self.AUDIO_RTTM_MAP:
@@ -399,7 +400,6 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         paths2audio_files (List[str]): list of paths to file containing audio file
         batch_size (int): batch_size considered for extraction of speaker embeddings and VAD computation
         """
-
         self._out_dir = self._diarizer_params.out_dir
 
         self._speaker_dir = os.path.join(self._diarizer_params.out_dir, 'speaker_outputs')
@@ -414,7 +414,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
 
         self._vad_dir = os.path.join(self._out_dir, 'vad_outputs')
         self._vad_out_file = os.path.join(self._vad_dir, "vad_out.json")
-
+        print("Legendary-ClusteringDiarizer diarizer   vad dir", self._vad_out_file)
         if batch_size:
             self._cfg.batch_size = batch_size
 
@@ -424,17 +424,20 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 self.path2audio_files_to_manifest(paths2audio_files, self._diarizer_params.manifest_filepath)
             else:
                 raise ValueError("paths2audio_files must be of type list of paths to file containing audio file")
-
+                
         self.AUDIO_RTTM_MAP = audio_rttm_map(self._diarizer_params.manifest_filepath)
-
+        print("Legendary-ClusteringDiarizer diarizer   AUDIO_RTTM_MAP", self.AUDIO_RTTM_MAP)
+        
         out_rttm_dir = os.path.join(self._out_dir, 'pred_rttms')
         os.makedirs(out_rttm_dir, exist_ok=True)
 
         # Speech Activity Detection
         self._perform_speech_activity_detection()
-
+        print("Legendary-ClusteringDiarizer diarizer Done speech acitivity detection and RTTM file created")
+        
         # Segmentation
         scales = self.multiscale_args_dict['scale_dict'].items()
+        print("Legendary-ClusteringDiarizer diarizer starting segmentation in sacles: ", scales)
         for scale_idx, (window, shift) in scales:
 
             # Segmentation for the current scale (scale_idx)
@@ -448,7 +451,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         embs_and_timestamps = get_embs_and_timestamps(
             self.multiscale_embeddings_and_timestamps, self.multiscale_args_dict
         )
-
+        
         # Clustering
         all_reference, all_hypothesis = perform_clustering(
             embs_and_timestamps=embs_and_timestamps,
