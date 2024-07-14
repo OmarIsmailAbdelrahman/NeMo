@@ -858,9 +858,9 @@ class ClusterEmbedding(torch.nn.Module):
                 Dictionary containing clustering results. Clustering results are cluster labels for the base scale segments.
 
 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
 
-
-               self.clus_diar_model = ClusteringDiarizer(cfg=self.cfg_diar_infer, speaker_model=self._speaker_model) 
+               self.clus_diar_model is ClusteringDiarizer in clustering_diarizer.py taking self._speaker_model as argument
         """
         self.cfg_diar_infer.diarizer.manifest_filepath = manifest_filepath
         self.cfg_diar_infer.diarizer.out_dir = emb_dir
@@ -878,21 +878,21 @@ class ClusterEmbedding(torch.nn.Module):
         self.clus_diar_model._diarizer_params.speaker_embeddings.parameters = (
             self.cfg_diar_infer.diarizer.speaker_embeddings.parameters
         )
-        print("Legendary- out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
-        print("Legendary- output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
-        print("Legendary- clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
+        print("Legendary-run_clustering_diarizer out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
+        print("Legendary-run_clustering_diarizer output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
+        print("Legendary-run_clustering_diarizer clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
               "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
 
-        print("Legendary- clsutring params:", self.clus_diar_model._cluster_params)
+        print("Legendary-run_clustering_diarizer clsutring params:", self.clus_diar_model._cluster_params)
         cluster_params = self.clus_diar_model._cluster_params
         cluster_params = dict(cluster_params) if isinstance(cluster_params, DictConfig) else cluster_params.dict()
         clustering_params_str = json.dumps(cluster_params, indent=4)
-        print("Legendary- clsutring params:", cluster_params, "\n str params" , clustering_params_str)
+        print("Legendary-run_clustering_diarizer clsutring params:", cluster_params, "\n str params" , clustering_params_str)
 
         logging.info(f"Multiscale Weights: {self.clus_diar_model.multiscale_args_dict['multiscale_weights']}")
         logging.info(f"Clustering Parameters: {clustering_params_str}")
         scores = self.clus_diar_model.diarize(batch_size=self.cfg_diar_infer.batch_size)
-        print("Legendary- clustering diar model diarization output",scores)
+        print("Legendary-run_clustering_diarizer clustering diar model diarization output",scores)
         # If RTTM (ground-truth diarization annotation) files do not exist, scores is None.
         if scores is not None:
             metric, speaker_mapping_dict, _ = scores
@@ -1203,8 +1203,10 @@ class NeuralDiarizer(LightningModule):
         Launch diarization pipeline which starts from VAD (or a oracle VAD stamp generation), initialization clustering and multiscale diarization decoder (MSDD).
         Note that the result of MSDD can include multiple speakers at the same time. Therefore, RTTM output of MSDD needs to be based on `make_rttm_with_overlap()`
         function that can generate overlapping timestamps. `self.run_overlap_aware_eval()` function performs DER evaluation.
+
+        Clustring embedding is ClusterEmbedding class 
         """
-        print("Legendary clustering_embedding")
+        print("Legendary prepare_cluster_embs_infer from ClusterEmbedding Class")
         
         self.clustering_embedding.prepare_cluster_embs_infer()
         
