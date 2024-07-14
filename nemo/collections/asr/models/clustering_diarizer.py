@@ -288,7 +288,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         # the subsegments manifiest path is the output path of the resulted segmenetation, the speaker_dir is the folder containing the results from different sizes
         self.subsegments_manifest_path = os.path.join(self._speaker_dir, f'subsegments{scale_tag}.json')
         logging.info(f"Subsegmentation for embedding extraction:{scale_tag.replace('_',' ')}, {self.subsegments_manifest_path}")
-        print("Legendary-run_segmentation subsegments_manifest_path:", self.subsegments_manifest_path, "speaker_dir: ", self._speaker_dir)
+        print("Legendary-run_segmentation output directory for subsegments_manifest_path:", self.subsegments_manifest_path, "speaker_dir: ", self._speaker_dir)
         self.subsegments_manifest_path = segments_manifest_to_subsegments_manifest(
             segments_manifest_file=self._speaker_manifest_path,
             subsegments_manifest_file=self.subsegments_manifest_path,
