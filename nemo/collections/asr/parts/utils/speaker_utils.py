@@ -894,10 +894,11 @@ def segments_manifest_to_subsegments_manifest(
     Returns:
         returns path to subsegment manifest file
     """
+    print("Legendary-segments_manifest_to_subsegments_manifest manifies file that contain the data: " segments_manifest_file)
     if subsegments_manifest_file is None:
         pwd = os.getcwd()
         subsegments_manifest_file = os.path.join(pwd, 'subsegments.json')
-
+    
     with open(segments_manifest_file, 'r') as segments_manifest, open(
         subsegments_manifest_file, 'w'
     ) as subsegments_manifest:
