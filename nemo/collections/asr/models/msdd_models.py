@@ -903,7 +903,7 @@ class ClusterEmbedding(torch.nn.Module):
             metric, speaker_mapping_dict, tempo = scores
         else:
             metric, speaker_mapping_dict,tempo = None, None,None
-        print("Legendary-ClusteringDiarizer diarize  metric: ",metric, "speaker_mapping_dict", speaker_mapping_dict, "unused values:", tempo)
+        print("Legendary-ClusteringDiarizer diarize  metric: \n",metric, "\n Legendary speaker_mapping_dict", speaker_mapping_dict, "unused values:", tempo)
         print("if None then no groundtruth")
         
         # Get the mapping between segments in different scales.
