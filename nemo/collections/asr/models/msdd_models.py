@@ -702,9 +702,12 @@ class ClusterEmbedding(torch.nn.Module):
         Launch clustering diarizer to prepare embedding vectors and clustering results.
         """
         self.max_num_speakers = self.cfg_diar_infer.diarizer.clustering.parameters.max_num_speakers
+        print("Legendary Maximum number of speakers: ", self.max_num_speakers)
+        print("clustring dialization parameters: manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
         self.emb_sess_test_dict, self.emb_seq_test, self.clus_test_label_dict, _ = self.run_clustering_diarizer(
             self._cfg_msdd.test_ds.manifest_filepath, self._cfg_msdd.test_ds.emb_dir
         )
+        print("emb_sess_test_dict: ", self.emb_sess_test_dict, " self.emb_seq_test: ", self.emb_seq_test, " clus_test_label_dict: ",  self.clus_test_label_dict)
 
     def assign_labels_to_longer_segs(self, base_clus_label_dict: Dict, session_scale_mapping_dict: Dict):
         """
