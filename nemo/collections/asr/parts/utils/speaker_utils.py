@@ -924,7 +924,7 @@ def segments_manifest_to_subsegments_manifest(
                         "label": label,
                         "uniq_id": uniq_id,
                     }
-
+                    print("Legendary-segments_manifest_to_subsegments dumping meta: ", meta, " to " segments_manifest_file)
                     json.dump(meta, subsegments_manifest)
                     subsegments_manifest.write("\n")
 
@@ -946,12 +946,14 @@ def get_subsegments(offset: float, window: float, shift: float, duration: float)
     start = offset
     slice_end = start + duration
     base = math.ceil((duration - window) / shift)
+    print("Legendary-get_subsegments x", (duration - window) / shift, " base " , base)
     slices = 1 if base < 0 else base + 1
     for slice_id in range(slices):
         end = start + window
         if end > slice_end:
             end = slice_end
         subsegments.append([start, end - start])
+        print("Legendary-get_subsegments start",start," end: ", end)
         start = offset + (slice_id + 1) * shift
     return subsegments
 
