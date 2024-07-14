@@ -352,13 +352,12 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         for test_batch in tqdm(self._speaker_model.test_dataloader(), desc=f'[{scale_idx+1}/{num_scales}] extract embeddings', leave=True, disable=not self.verbose):
             test_batch = [x.to(self._speaker_model.device) for x in test_batch]
             audio_signal, audio_signal_len, labels, slices = test_batch
-            print("\n Legendary-extract_embedding model input length:", audio_signal.shape , audio_signal_len, " labels: ", labels, "slices: ", slices)
+            print("\n Legendary-extract_embedding model input length:", audio_signal.shape , audio_signal_len, " labels: ", labels, "slices: ", slices) # the lenght is equal to sampling rate * window size
             with autocast():
                 _, embs = self._speaker_model.forward(input_signal=audio_signal, input_signal_length=audio_signal_len)
                 print("Legendary-extract_embedding model output shape: " , embs.shape)
                 emb_shape = embs.shape[-1]
                 embs = embs.view(-1, emb_shape)
-                print("Legendary-extract_embedding reshaped: " , embs.shape)
                 all_embs = torch.cat((all_embs, embs.cpu().detach()), dim=0)
                 print("Legendary-extract_embedding entier segment: " , all_embs.shape)
             del test_batch
@@ -374,19 +373,23 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                     self.embeddings[uniq_name] = all_embs[i].view(1, -1)
                 if uniq_name not in self.time_stamps:
                     self.time_stamps[uniq_name] = []
+                    
                 start = dic['offset']
                 end = start + dic['duration']
                 self.time_stamps[uniq_name].append([start, end])
+                print("Legendary-extract_embedding segment: ", self.embeddings[uniq_name].shape , " uniq " uniq_name , "time_stamps: ", self.time_stamps[uniq_name])
+
 
         if self._speaker_params.save_embeddings:
             embedding_dir = os.path.join(self._speaker_dir, 'embeddings')
             if not os.path.exists(embedding_dir):
                 os.makedirs(embedding_dir, exist_ok=True)
-
+            
             prefix = get_uniqname_from_filepath(manifest_file)
             name = os.path.join(embedding_dir, prefix)
             self._embeddings_file = name + f'_embeddings.pkl'
             pkl.dump(self.embeddings, open(self._embeddings_file, 'wb'))
+            print("Legendary-extract_embedding save embedding to: " , self._embeddings_file)
             logging.info("Saved embedding files to {}".format(embedding_dir))
 
     def diarize(self, paths2audio_files: List[str] = None, batch_size: int = 0):
