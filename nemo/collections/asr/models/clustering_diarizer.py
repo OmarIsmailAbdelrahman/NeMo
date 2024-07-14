@@ -325,7 +325,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 logging.warning(
                     "If you encounter CUDA memory issue, try splitting manifest entry by split_duration to avoid it."
                 )
-
+            print("Legendary-perform_speech_activite setup vad data of manifiest", manifest_vad_input)
             self._setup_vad_test_data(manifest_vad_input)
             print("Legendary-perform_speech_activite run vad on manifiest", manifest_vad_input)
             self._run_vad(manifest_vad_input)
