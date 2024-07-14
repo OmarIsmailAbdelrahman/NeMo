@@ -399,6 +399,12 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         input:
         paths2audio_files (List[str]): list of paths to file containing audio file
         batch_size (int): batch_size considered for extraction of speaker embeddings and VAD computation
+
+
+        vad_out_file /kaggle/working/output_inference/vad_outputs/vad_out.json => {"audio_filepath": "/kaggle/working/train/mixed_segment0.wav", "offset": 1.5, "duration": 2.11, "label": "UNK", "uniq_id": "mixed_segment0"}
+
+
+        audio_rttm_map(manifest) this link the rttm with the audio files which is used in vad 
         """
         self._out_dir = self._diarizer_params.out_dir
 
@@ -414,7 +420,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
 
         self._vad_dir = os.path.join(self._out_dir, 'vad_outputs')
         self._vad_out_file = os.path.join(self._vad_dir, "vad_out.json")
-        print("Legendary-ClusteringDiarizer diarizer   vad dir", self._vad_out_file)
+        print("Legendary-ClusteringDiarizer diarizer vad dir", self._vad_out_file)
         if batch_size:
             self._cfg.batch_size = batch_size
 
@@ -425,8 +431,8 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             else:
                 raise ValueError("paths2audio_files must be of type list of paths to file containing audio file")
                 
-        self.AUDIO_RTTM_MAP = audio_rttm_map(self._diarizer_params.manifest_filepath)
-        print("Legendary-ClusteringDiarizer diarizer   AUDIO_RTTM_MAP", self.AUDIO_RTTM_MAP)
+        self.AUDIO_RTTM_MAP = audio_rttm_map(self._diarizer_params.manifest_filepath) 
+        print("Legendary-ClusteringDiarizer diarizer  create AUDIO_RTTM_MAP", self.AUDIO_RTTM_MAP, " using manifist: ", self._diarizer_params.manifest_filepath)
         
         out_rttm_dir = os.path.join(self._out_dir, 'pred_rttms')
         os.makedirs(out_rttm_dir, exist_ok=True)
