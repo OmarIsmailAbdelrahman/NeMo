@@ -1098,7 +1098,7 @@ class NeuralDiarizer(LightningModule):
             self.msdd_model = EncDecDiarLabelModel.from_pretrained(model_name=model_path, map_location=cfg.device)
         # Load speaker embedding model state_dict which is loaded from the MSDD checkpoint.
         if self.use_speaker_model_from_ckpt:
-            print("heeeeeeeeeeeeeeeerergae;glr,e \n \n \n rgaegraegreagreagaergaerbrtmbhkrtmbhi0rtmbiprtnbrtnbhatp")
+            print("Loading the model from ckpt local")
             self._speaker_model = self.extract_standalone_speaker_model()
         else:
             self._speaker_model = None
@@ -1195,11 +1195,17 @@ class NeuralDiarizer(LightningModule):
         print("Legendary run_pairwise_diarization")
         
         preds_list, targets_list, signal_lengths_list = self.run_pairwise_diarization()
+        print("Legendary run pair_wise results \n", "pred_list: " ,preds_list, "targets_list: " ,targets_list, "signal length: " ,signal_lengths_list)
         
         thresholds = list(self._cfg.diarizer.msdd_model.parameters.sigmoid_threshold)
 
+        print("Legendary thresholds",thresholds)
+        
         print("Legendary run_overlap_aware_eval")
-        return [self.run_overlap_aware_eval(preds_list, threshold) for threshold in thresholds]
+        
+        temp_value = [self.run_overlap_aware_eval(preds_list, threshold) for threshold in thresholds]
+        print("Legenadary results",temp_value)
+        return temp_value
 
     def get_range_average(
         self, signals: torch.Tensor, emb_vectors: torch.Tensor, diar_window_index: int, test_data_collection: List[Any]
