@@ -441,11 +441,13 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         for scale_idx, (window, shift) in scales:
 
             # Segmentation for the current scale (scale_idx)
+            print("Legendary-ClusteringDiarizer diarizer running segmentation on windows:", window, " shift: ", shift, " scale_tag: ",  f'_scale{scale_idx}')
             self._run_segmentation(window, shift, scale_tag=f'_scale{scale_idx}')
 
             # Embedding Extraction for the current scale (scale_idx)
             self._extract_embeddings(self.subsegments_manifest_path, scale_idx, len(scales))
-
+            print("Legendary-ClusteringDiarizer diarizer embedding on subsegment ", self.subsegments_manifest_path, " scale_idx " , scale_idx, "number of scales", len(scales))
+            
             self.multiscale_embeddings_and_timestamps[scale_idx] = [self.embeddings, self.time_stamps]
 
         embs_and_timestamps = get_embs_and_timestamps(
