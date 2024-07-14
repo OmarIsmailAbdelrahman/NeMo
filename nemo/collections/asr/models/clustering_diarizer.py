@@ -347,12 +347,12 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         self.embeddings = {}
         self._speaker_model.eval()
         self.time_stamps = {}
-
+        print("Legendary-extract_embedding manifest file: ", manifest_file)
         all_embs = torch.empty([0])
         for test_batch in tqdm(self._speaker_model.test_dataloader(), desc=f'[{scale_idx+1}/{num_scales}] extract embeddings', leave=True, disable=not self.verbose):
             test_batch = [x.to(self._speaker_model.device) for x in test_batch]
             audio_signal, audio_signal_len, labels, slices = test_batch
-            print("Legendary-extract_embedding model input length:", audio_signal_len, " labels: ", labels, "slices: ", slices)
+            print("\n Legendary-extract_embedding model input length:", audio_signal.shape , audio_signal_len, " labels: ", labels, "slices: ", slices)
             with autocast():
                 _, embs = self._speaker_model.forward(input_signal=audio_signal, input_signal_length=audio_signal_len)
                 print("Legendary-extract_embedding model output shape: " , embs.shape)
