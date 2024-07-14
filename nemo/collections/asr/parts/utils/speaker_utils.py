@@ -906,7 +906,9 @@ def segments_manifest_to_subsegments_manifest(
             segment = segment.strip()
             dic = json.loads(segment)
             audio, offset, duration, label = dic['audio_filepath'], dic['offset'], dic['duration'], dic['label']
+            print("Legendary-segments_manifest_to_subsegments_manifest segment", segment, audio, offset, duration, label)
             subsegments = get_subsegments(offset=offset, window=window, shift=shift, duration=duration)
+            print("Legendary-get_subsegments segments:", subsegments)
             if include_uniq_id and 'uniq_id' in dic:
                 uniq_id = dic['uniq_id']
             else:
