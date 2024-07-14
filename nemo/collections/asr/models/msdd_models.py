@@ -856,15 +856,16 @@ class ClusterEmbedding(torch.nn.Module):
                 Dictionary containing embedding tensors which are indexed by scale numbers.
             base_clus_label_dict (dict):
                 Dictionary containing clustering results. Clustering results are cluster labels for the base scale segments.
+
+
+
+
+               self.clus_diar_model = ClusteringDiarizer(cfg=self.cfg_diar_infer, speaker_model=self._speaker_model) 
         """
         self.cfg_diar_infer.diarizer.manifest_filepath = manifest_filepath
         self.cfg_diar_infer.diarizer.out_dir = emb_dir
 
         # Run ClusteringDiarizer which includes system VAD or oracle VAD.
-        print("Legendary- out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
-        print("Legendary- output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
-        print("Legendary- clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
-              "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
         
         self._out_dir = self.clus_diar_model._diarizer_params.out_dir
         self.out_rttm_dir = os.path.join(self._out_dir, 'pred_rttms')
@@ -877,6 +878,10 @@ class ClusterEmbedding(torch.nn.Module):
         self.clus_diar_model._diarizer_params.speaker_embeddings.parameters = (
             self.cfg_diar_infer.diarizer.speaker_embeddings.parameters
         )
+        print("Legendary- out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
+        print("Legendary- output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
+        print("Legendary- clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
+              "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
 
         print("Legendary- clsutring params:", self.clus_diar_model._cluster_params)
         cluster_params = self.clus_diar_model._cluster_params
