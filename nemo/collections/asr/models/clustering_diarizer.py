@@ -362,7 +362,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 print("Legendary-extract_embedding entier segment: " , all_embs.shape)
             del test_batch
 
-        with open(manifest_file, 'r', encoding='utf-8') as manifest:
+        with open(manifest_file, 'r', encoding='utf-8') as manifest: # this just to associate each segement in audio to the correct embedding
             for i, line in enumerate(manifest.readlines()):
                 line = line.strip()
                 dic = json.loads(line)
@@ -377,7 +377,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 start = dic['offset']
                 end = start + dic['duration']
                 self.time_stamps[uniq_name].append([start, end])
-                print("Legendary-extract_embedding segment: ", self.embeddings[uniq_name].shape , " uniq ", uniq_name , "time_stamps: ", self.time_stamps[uniq_name])
+                print("Legendary-extract_embedding segment: self.embeddings[uniq_name]", self.embeddings[uniq_name].shape , " uniq_name ", uniq_name , "time_stamps: ", self.time_stamps[uniq_name])
 
 
         if self._speaker_params.save_embeddings:
@@ -454,20 +454,20 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             print("Legendary segmentation epoch ",counter )
             counter += 1
             # Segmentation for the current scale (scale_idx)
-            print("\n==========================================================================================================\n") # this means i am focusing from this part
             print("Legendary-ClusteringDiarizer diarizer running segmentation on windows:", window, " shift: ", shift, " scale_tag: ",  f'_scale{scale_idx}')
             self._run_segmentation(window, shift, scale_tag=f'_scale{scale_idx}')
 
             # Embedding Extraction for the current scale (scale_idx)
             self._extract_embeddings(self.subsegments_manifest_path, scale_idx, len(scales))
-            print("Legendary-ClusteringDiarizer diarizer embedding on subsegment to path:", self.subsegments_manifest_path, " scale_idx:" , scale_idx, ", number of scales:", len(scales))
             
-            self.multiscale_embeddings_and_timestamps[scale_idx] = [self.embeddings, self.time_stamps]
+            self.multiscale_embeddings_and_timestamps[scale_idx] = [self.embeddings, self.time_stamps] # these are the embedding 
 
         embs_and_timestamps = get_embs_and_timestamps(
             self.multiscale_embeddings_and_timestamps, self.multiscale_args_dict
-        )
+        ) # this just rearange the embedding of each scale with the correct scale index to help it access it easly
         
+        print("\n==========================================================================================================\n") # this means i am focusing from this part
+
         # Clustering
         all_reference, all_hypothesis = perform_clustering(
             embs_and_timestamps=embs_and_timestamps,
