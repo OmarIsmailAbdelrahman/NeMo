@@ -910,18 +910,18 @@ class ClusterEmbedding(torch.nn.Module):
         self._embs_and_timestamps = get_embs_and_timestamps(
             self.clus_diar_model.multiscale_embeddings_and_timestamps, self.clus_diar_model.multiscale_args_dict
         )
-        print("Legendary-ClusteringDiarizer multiscale embedding and timestamps:", self.clus_diar_model.multiscale_embeddings_and_timestamps, "\n multiscale_args_dict: ", self.clus_diar_model.multiscale_args_dict)
-        print("Legendary-run_clustering_diarizer emvs and timestamps: ", self._embs_and_timestamps)
+        #print("Legendary-ClusteringDiarizer multiscale embedding and timestamps:", self.clus_diar_model.multiscale_embeddings_and_timestamps, "\n multiscale_args_dict: ", self.clus_diar_model.multiscale_args_dict)
+        #print("Legendary-run_clustering_diarizer emvs and timestamps: ", self._embs_and_timestamps)
         session_scale_mapping_dict = self.get_scale_map(self._embs_and_timestamps)
         
         emb_scale_seq_dict = self.load_emb_scale_seq_dict(emb_dir)
         
         clus_labels = self.load_clustering_labels(emb_dir)
-        print("Legendary-run_clustering_diarizer scale map",session_scale_mapping_dict, "\n loaded emb scale seq dict", emb_scale_seq_dict, "\n clustring labels ", clus_labels)
+        #print("Legendary-run_clustering_diarizer scale map",session_scale_mapping_dict, "\n loaded emb scale seq dict", emb_scale_seq_dict, "\n clustring labels ", clus_labels)
         emb_sess_avg_dict, base_clus_label_dict = self.get_cluster_avg_embs(
             emb_scale_seq_dict, clus_labels, speaker_mapping_dict, session_scale_mapping_dict
         )
-        print("Legendary-get_cluster_avg_embs emb_scale_seq_dict", emb_scale_seq_dict ,"\n base_clus_label_dict", base_clus_label_dict)
+        #print("Legendary-get_cluster_avg_embs emb_scale_seq_dict", emb_scale_seq_dict ,"\n base_clus_label_dict", base_clus_label_dict)
         emb_scale_seq_dict['session_scale_mapping'] = session_scale_mapping_dict
         return emb_sess_avg_dict, emb_scale_seq_dict, base_clus_label_dict, metric
 
