@@ -701,15 +701,15 @@ class ClusterEmbedding(torch.nn.Module):
         """
         Launch clustering diarizer to prepare embedding vectors and clustering results.
 
-        manifest file is the input manifest file.json
-        emb_dir is the output infererence directory 
++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+        manifest file is the input manifest /kaggle/working/input_manifest.json
+        emb_dir is the output infererence directory /kaggle/working/output_inference
         max_num_speakers is the maximum number of speakers = 8
-
-        run clustring takes the manifest and the output directory and returns 
+        run_clustering_diarizer input: manifest, inferenece output directory     returns:
         """
         self.max_num_speakers = self.cfg_diar_infer.diarizer.clustering.parameters.max_num_speakers
-        print("Legendary Maximum number of speakers: ", self.max_num_speakers)
-        print("Legendary : manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
+        #print("Legendary Maximum number of speakers: ", self.max_num_speakers)
+        #print("Legendary : manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
         self.emb_sess_test_dict, self.emb_seq_test, self.clus_test_label_dict, _ = self.run_clustering_diarizer(
             self._cfg_msdd.test_ds.manifest_filepath, self._cfg_msdd.test_ds.emb_dir
         )
@@ -859,7 +859,14 @@ class ClusterEmbedding(torch.nn.Module):
 
 
 +++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++++
+                out_dir: /kaggle/working/output_inference
+                output rttm directory: /kaggle/working/output_inference/pred_rttms
+                clustring paraters: oracle_num_speakers-max_num_speakers=8- etc
+                multiscale weights: [1,1,1,1]
+                embdeeing cfg: {'window_length_in_sec': [1.5, 1.25, 1.0, 0.75, 0.5], 'shift_length_in_sec': [0.75, 0.625, 0.5, 0.375, 0.25], 'multiscale_weights': [1, 1, 1, 1, 1], 'save_embeddings': True}
+                speaker_mapping_dict {'mixed_segment0': {'speaker_0': '0', 'speaker_1': '1'}}
 
+                
                self.clus_diar_model is ClusteringDiarizer in clustering_diarizer.py taking self._speaker_model as argument
         """
         self.cfg_diar_infer.diarizer.manifest_filepath = manifest_filepath
@@ -878,37 +885,43 @@ class ClusterEmbedding(torch.nn.Module):
         self.clus_diar_model._diarizer_params.speaker_embeddings.parameters = (
             self.cfg_diar_infer.diarizer.speaker_embeddings.parameters
         )
-        print("Legendary-run_clustering_diarizer out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
-        print("Legendary-run_clustering_diarizer output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
-        print("Legendary-run_clustering_diarizer clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
-              "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
+        #print("Legendary-run_clustering_diarizer out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
+        #print("Legendary-run_clustering_diarizer out_rttm_dir:",  os.path.join(self._out_dir, 'pred_rttms'))
+        #print("Legendary-run_clustering_diarizer clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
+         #     "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
 
-        print("Legendary-run_clustering_diarizer clsutring params:", self.clus_diar_model._cluster_params)
         cluster_params = self.clus_diar_model._cluster_params
         cluster_params = dict(cluster_params) if isinstance(cluster_params, DictConfig) else cluster_params.dict()
         clustering_params_str = json.dumps(cluster_params, indent=4)
-        print("Legendary-run_clustering_diarizer clsutring params:", cluster_params, "\n str params" , clustering_params_str)
+        #print("Legendary-run_clustering_diarizer clsutring params:", cluster_params, "\n str params" , clustering_params_str)
 
         logging.info(f"Multiscale Weights: {self.clus_diar_model.multiscale_args_dict['multiscale_weights']}")
         logging.info(f"Clustering Parameters: {clustering_params_str}")
         scores = self.clus_diar_model.diarize(batch_size=self.cfg_diar_infer.batch_size)
-        print("Legendary-run_clustering_diarizer clustering diar model diarization output",scores)
         # If RTTM (ground-truth diarization annotation) files do not exist, scores is None.
         if scores is not None:
-            metric, speaker_mapping_dict, _ = scores
+            metric, speaker_mapping_dict, tempo = scores
         else:
-            metric, speaker_mapping_dict = None, None
-
+            metric, speaker_mapping_dict,tempo = None, None,None
+        print("Legendary-ClusteringDiarizer diarize  metric: ",metric, "speaker_mapping_dict", speaker_mapping_dict, "unused values:", tempo)
+        print("if None then no groundtruth")
+        
         # Get the mapping between segments in different scales.
         self._embs_and_timestamps = get_embs_and_timestamps(
             self.clus_diar_model.multiscale_embeddings_and_timestamps, self.clus_diar_model.multiscale_args_dict
         )
+        print("Legendary-ClusteringDiarizer multiscale embedding and timestamps:", self.clus_diar_model.multiscale_embeddings_and_timestamps, "\n multiscale_args_dict: ", self.clus_diar_model.multiscale_args_dict)
+        print("Legendary-run_clustering_diarizer emvs and timestamps": self._embs_and_timestamps)
         session_scale_mapping_dict = self.get_scale_map(self._embs_and_timestamps)
+        
         emb_scale_seq_dict = self.load_emb_scale_seq_dict(emb_dir)
+        
         clus_labels = self.load_clustering_labels(emb_dir)
+        print("Legendary-run_clustering_diarizer scale map",session_scale_mapping_dict, "\n loaded emb scale seq dict", emb_scale_seq_dict, "\n clustring labels ", clus_labels)
         emb_sess_avg_dict, base_clus_label_dict = self.get_cluster_avg_embs(
             emb_scale_seq_dict, clus_labels, speaker_mapping_dict, session_scale_mapping_dict
         )
+        print("Legendary-get_cluster_avg_embs emb_scale_seq_dict", emb_scale_seq_dict ,"\n base_clus_label_dict", base_clus_label_dict)
         emb_scale_seq_dict['session_scale_mapping'] = session_scale_mapping_dict
         return emb_sess_avg_dict, emb_scale_seq_dict, base_clus_label_dict, metric
 
