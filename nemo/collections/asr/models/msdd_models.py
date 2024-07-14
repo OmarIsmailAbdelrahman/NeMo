@@ -713,7 +713,7 @@ class ClusterEmbedding(torch.nn.Module):
         self.emb_sess_test_dict, self.emb_seq_test, self.clus_test_label_dict, _ = self.run_clustering_diarizer(
             self._cfg_msdd.test_ds.manifest_filepath, self._cfg_msdd.test_ds.emb_dir
         )
-        print("Legendary emb_sess_test_dict: ", self.emb_sess_test_dict, " self.emb_seq_test: ", self.emb_seq_test, " clus_test_label_dict: ",  self.clus_test_label_dict)
+        #print("Legendary emb_sess_test_dict: ", self.emb_sess_test_dict, " self.emb_seq_test: ", self.emb_seq_test, " clus_test_label_dict: ",  self.clus_test_label_dict)
 
     def assign_labels_to_longer_segs(self, base_clus_label_dict: Dict, session_scale_mapping_dict: Dict):
         """
@@ -1232,7 +1232,7 @@ class NeuralDiarizer(LightningModule):
         print("Legendary run_pairwise_diarization")
         
         preds_list, targets_list, signal_lengths_list = self.run_pairwise_diarization()
-        print("Legendary run pair_wise results \n", "pred_list: " ,preds_list, "targets_list: " ,targets_list, "signal length: " ,signal_lengths_list)
+        #print("Legendary run pair_wise results \n", "pred_list: " ,preds_list, "targets_list: " ,targets_list, "signal length: " ,signal_lengths_list)
         
         thresholds = list(self._cfg.diarizer.msdd_model.parameters.sigmoid_threshold)
 
