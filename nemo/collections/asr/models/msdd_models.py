@@ -703,11 +703,11 @@ class ClusterEmbedding(torch.nn.Module):
         """
         self.max_num_speakers = self.cfg_diar_infer.diarizer.clustering.parameters.max_num_speakers
         print("Legendary Maximum number of speakers: ", self.max_num_speakers)
-        print("clustring dialization parameters: manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
+        print("Legendary clustring dialization parameters: manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
         self.emb_sess_test_dict, self.emb_seq_test, self.clus_test_label_dict, _ = self.run_clustering_diarizer(
             self._cfg_msdd.test_ds.manifest_filepath, self._cfg_msdd.test_ds.emb_dir
         )
-        print("emb_sess_test_dict: ", self.emb_sess_test_dict, " self.emb_seq_test: ", self.emb_seq_test, " clus_test_label_dict: ",  self.clus_test_label_dict)
+        print("Legendary emb_sess_test_dict: ", self.emb_sess_test_dict, " self.emb_seq_test: ", self.emb_seq_test, " clus_test_label_dict: ",  self.clus_test_label_dict)
 
     def assign_labels_to_longer_segs(self, base_clus_label_dict: Dict, session_scale_mapping_dict: Dict):
         """
@@ -1101,7 +1101,7 @@ class NeuralDiarizer(LightningModule):
             self.msdd_model = EncDecDiarLabelModel.from_pretrained(model_name=model_path, map_location=cfg.device)
         # Load speaker embedding model state_dict which is loaded from the MSDD checkpoint.
         if self.use_speaker_model_from_ckpt:
-            print("Loading the model from ckpt local")
+            print("Legendary Loading the model from ckpt local")
             self._speaker_model = self.extract_standalone_speaker_model()
         else:
             self._speaker_model = None
