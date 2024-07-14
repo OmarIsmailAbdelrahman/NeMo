@@ -203,7 +203,6 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         manifest_file (str) : Manifest file containing path to audio file and label as infer
 
         """
-        print("Legendary-ClusteringDiarizer running VAD from manifiest ", manifest_file)
         shutil.rmtree(self._vad_dir, ignore_errors=True)
         os.makedirs(self._vad_dir)
 
@@ -216,12 +215,10 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         data = []
         for line in open(manifest_file, 'r', encoding='utf-8'):
             file = json.loads(line)['audio_filepath']
-            data.append(get_uniqname_from_filepath(file))
+            data.append(get_uniqname_from_filepath(file)) # Reading the audios from the manifies file 
 
         status = get_vad_stream_status(data)
-        for i, test_batch in enumerate(
-            tqdm(self._vad_model.test_dataloader(), desc='vad', leave=True, disable=not self.verbose)
-        ):
+        for i, test_batch in enumerate(tqdm(self._vad_model.test_dataloader(), desc='vad', leave=True, disable=not self.verbose)): # iterate on the data
             test_batch = [x.to(self._vad_model.device) for x in test_batch]
             with autocast():
                 log_probs = self._vad_model(input_signal=test_batch[0], input_signal_length=test_batch[1])
@@ -273,7 +270,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             num_workers=self._cfg.num_workers,
             out_dir=self._vad_dir,
         )
-        print("Legendary-ClusteringDiarizer creating vad segment table in: ",table_out_dir)
+        print("Legendary-ClusteringDiarizer creating vad segment table in: ",table_out_dir, "_vad_dir",self._vad_dir)
 
         AUDIO_VAD_RTTM_MAP = {}
         for key in self.AUDIO_RTTM_MAP:
@@ -284,6 +281,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 logging.warning(f"no vad file found for {key} due to zero or negative duration")
 
         write_rttm2manifest(AUDIO_VAD_RTTM_MAP, self._vad_out_file)
+        print("Legendary-run_vad write the rttm to manifest ", AUDIO_VAD_RTTM_MAP, " to directory ", self._vad_out_file)
         self._speaker_manifest_path = self._vad_out_file
 
     def _run_segmentation(self, window: float, shift: float, scale_tag: str = ''):
@@ -320,14 +318,13 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                     'num_workers': self._cfg.num_workers,
                     'out_dir': self._diarizer_params.out_dir,
                 }
-                manifest_vad_input = prepare_manifest(config)
+                manifest_vad_input = prepare_manifest(config) # this changes the path to another configratuion 
+                print("Legendary-prepare_manifest created new vad input manifiest in ", manifest_vad_input)
             else:
                 logging.warning(
                     "If you encounter CUDA memory issue, try splitting manifest entry by split_duration to avoid it."
                 )
-            print("Legendary-perform_speech_activite setup vad data of manifiest", manifest_vad_input)
             self._setup_vad_test_data(manifest_vad_input)
-            print("Legendary-perform_speech_activite run vad on manifiest", manifest_vad_input)
             self._run_vad(manifest_vad_input)
 
         elif self._diarizer_params.vad.external_vad_manifest is not None:
@@ -445,6 +442,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         os.makedirs(out_rttm_dir, exist_ok=True)
 
         # Speech Activity Detection
+        print("Legendary-ClusteringDiarizer diarizer start running speech activity", self._diarizer_params.manifest_filepath)
         self._perform_speech_activity_detection()
         print("Legendary-ClusteringDiarizer diarizer Done speech acitivity detection and RTTM file created")
         
