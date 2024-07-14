@@ -924,7 +924,7 @@ def segments_manifest_to_subsegments_manifest(
                         "label": label,
                         "uniq_id": uniq_id,
                     }
-                    print("Legendary-segments_manifest_to_subsegments dumping meta: ", meta, " to " ,segments_manifest_file)
+                    print("Legendary-segments_manifest_to_subsegments dumping meta: ", meta, " to " ,subsegments_manifest_file)
                     json.dump(meta, subsegments_manifest)
                     subsegments_manifest.write("\n")
 
