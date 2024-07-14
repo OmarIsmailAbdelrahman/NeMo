@@ -377,7 +377,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                 start = dic['offset']
                 end = start + dic['duration']
                 self.time_stamps[uniq_name].append([start, end])
-                print("Legendary-extract_embedding segment: ", self.embeddings[uniq_name].shape , " uniq " uniq_name , "time_stamps: ", self.time_stamps[uniq_name])
+                print("Legendary-extract_embedding segment: ", self.embeddings[uniq_name].shape , " uniq ", uniq_name , "time_stamps: ", self.time_stamps[uniq_name])
 
 
         if self._speaker_params.save_embeddings:
