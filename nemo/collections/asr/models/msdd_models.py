@@ -700,10 +700,16 @@ class ClusterEmbedding(torch.nn.Module):
     def prepare_cluster_embs_infer(self):
         """
         Launch clustering diarizer to prepare embedding vectors and clustering results.
+
+        manifest file is the input manifest file.json
+        emb_dir is the output infererence directory 
+        max_num_speakers is the maximum number of speakers = 8
+
+        run clustring takes the manifest and the output directory and returns 
         """
         self.max_num_speakers = self.cfg_diar_infer.diarizer.clustering.parameters.max_num_speakers
         print("Legendary Maximum number of speakers: ", self.max_num_speakers)
-        print("Legendary clustring dialization parameters: manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
+        print("Legendary : manifest file:", self._cfg_msdd.test_ds.manifest_filepath, "emb_dir: ",self._cfg_msdd.test_ds.emb_dir)
         self.emb_sess_test_dict, self.emb_seq_test, self.clus_test_label_dict, _ = self.run_clustering_diarizer(
             self._cfg_msdd.test_ds.manifest_filepath, self._cfg_msdd.test_ds.emb_dir
         )
@@ -855,6 +861,11 @@ class ClusterEmbedding(torch.nn.Module):
         self.cfg_diar_infer.diarizer.out_dir = emb_dir
 
         # Run ClusteringDiarizer which includes system VAD or oracle VAD.
+        print("Legendary- out_dir: ",  self.clus_diar_model._diarizer_params.out_dir)
+        print("Legendary- output rttm directory:",  os.path.join(self._out_dir, 'pred_rttms'))
+        print("Legendary- clustring parameters:", self.cfg_diar_infer.diarizer.clustering.parameters, "\n multiscale weights cfg",  self.cfg_diar_infer.diarizer.speaker_embeddings.parameters.multiscale_weights, 
+              "\n embdeeing cfg", self.cfg_diar_infer.diarizer.speaker_embeddings.parameters)
+        
         self._out_dir = self.clus_diar_model._diarizer_params.out_dir
         self.out_rttm_dir = os.path.join(self._out_dir, 'pred_rttms')
         os.makedirs(self.out_rttm_dir, exist_ok=True)
@@ -866,14 +877,17 @@ class ClusterEmbedding(torch.nn.Module):
         self.clus_diar_model._diarizer_params.speaker_embeddings.parameters = (
             self.cfg_diar_infer.diarizer.speaker_embeddings.parameters
         )
+
+        print("Legendary- clsutring params:", self.clus_diar_model._cluster_params)
         cluster_params = self.clus_diar_model._cluster_params
         cluster_params = dict(cluster_params) if isinstance(cluster_params, DictConfig) else cluster_params.dict()
         clustering_params_str = json.dumps(cluster_params, indent=4)
+        print("Legendary- clsutring params:", cluster_params, "\n str params" , clustering_params_str)
 
         logging.info(f"Multiscale Weights: {self.clus_diar_model.multiscale_args_dict['multiscale_weights']}")
         logging.info(f"Clustering Parameters: {clustering_params_str}")
         scores = self.clus_diar_model.diarize(batch_size=self.cfg_diar_infer.batch_size)
-
+        print("Legendary- clustering diar model diarization output",scores)
         # If RTTM (ground-truth diarization annotation) files do not exist, scores is None.
         if scores is not None:
             metric, speaker_mapping_dict, _ = scores
