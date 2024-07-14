@@ -473,7 +473,7 @@ def perform_clustering(
 
     for uniq_id, audio_rttm_values in tqdm(AUDIO_RTTM_MAP.items(), desc='clustering', leave=True, disable=not verbose):
         uniq_embs_and_timestamps = embs_and_timestamps[uniq_id]
-        print("Legendary-perform_clustering uniq_id", uniq_id, "rttm values", audio_rttm_values)
+        print("\n Legendary-perform_clustering uniq_id", uniq_id, "rttm values", audio_rttm_values)
         
         if clustering_params.oracle_num_speakers:
             num_speakers = audio_rttm_values.get('num_speakers', None)
@@ -507,7 +507,7 @@ def perform_clustering(
         cluster_labels = cluster_labels.cpu().numpy()
         if len(cluster_labels) != timestamps.shape[0]:
             raise ValueError("Mismatch of length between cluster_labels and timestamps.")
-
+        # the generation happens in the smallest timestamp like '2.5 3.0 speaker_0', this can result to having problem with fast changes as one speaker is assigned for each timestamp?
         labels, lines = generate_cluster_labels(timestamps, cluster_labels)
         print("Legendary-perform_clustering base_scale_idx",base_scale_idx, " timestamps ", timestamps, "cluster_labels " , cluster_labels , " labels ", labels , "lines", lines)
 
@@ -528,7 +528,7 @@ def perform_clustering(
 
     if out_rttm_dir:
         write_cluster_labels(base_scale_idx, lines_cluster_labels, out_rttm_dir)
-
+        print("Legendary-perform_clustering write clustter labels for base_scale_idx", base_scale_idx , "lines labels", lines_cluster_labels , "output directory ", out_rttm_dir)
     return all_reference, all_hypothesis
 
 
