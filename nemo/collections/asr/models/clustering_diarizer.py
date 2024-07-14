@@ -203,7 +203,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         manifest_file (str) : Manifest file containing path to audio file and label as infer
 
         """
-        print("Legendary-ClusteringDiarizer running VAD")
+        print("Legendary-ClusteringDiarizer running VAD from manifiest ", manifest_file)
         shutil.rmtree(self._vad_dir, ignore_errors=True)
         os.makedirs(self._vad_dir)
 
@@ -405,9 +405,12 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
 
         vad_out_file is the output of the vad model /kaggle/working/output_inference/vad_outputs/vad_out.json => {"audio_filepath": "/kaggle/working/train/mixed_segment0.wav", "offset": 1.5, "duration": 2.11, "label": "UNK", "uniq_id": "mixed_segment0"}
         self._diarizer_params.manifest_filepath is the input manifies path /kaggle/working/input_manifest.json
+        scales contain list of n sizes of segments each with contain segment size and shift size that is used in segmentation
+        
 
         audio_rttm_map(manifest) this link the rttm with the audio files which is used in vad and other components, it uses the input manifest
         _perform_speech_activity_detection this uses the input manifiest and create an rttm file of the VAD output
+        _extract_embeddings takes the segmentation of specific length and output and 
         """
         self._out_dir = self._diarizer_params.out_dir
 
@@ -450,7 +453,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         print("Legendary-ClusteringDiarizer diarizer starting segmentation in sacles: ", scales)
         counter = 0
         for scale_idx, (window, shift) in scales:
-            print("segmentation epoch ",counter )
+            print("Legendary segmentation epoch ",counter )
             counter += 1
             # Segmentation for the current scale (scale_idx)
             print("Legendary-ClusteringDiarizer diarizer running segmentation on windows:", window, " shift: ", shift, " scale_tag: ",  f'_scale{scale_idx}')
@@ -458,7 +461,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
 
             # Embedding Extraction for the current scale (scale_idx)
             self._extract_embeddings(self.subsegments_manifest_path, scale_idx, len(scales))
-            print("Legendary-ClusteringDiarizer diarizer embedding on subsegment ", self.subsegments_manifest_path, " scale_idx " , scale_idx, "number of scales", len(scales))
+            print("Legendary-ClusteringDiarizer diarizer embedding on subsegment to path:", self.subsegments_manifest_path, " scale_idx:" , scale_idx, ", number of scales:", len(scales))
             
             self.multiscale_embeddings_and_timestamps[scale_idx] = [self.embeddings, self.time_stamps]
 
