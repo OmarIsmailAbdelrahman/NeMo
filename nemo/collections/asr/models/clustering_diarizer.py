@@ -287,9 +287,8 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
     def _run_segmentation(self, window: float, shift: float, scale_tag: str = ''):
 
         self.subsegments_manifest_path = os.path.join(self._speaker_dir, f'subsegments{scale_tag}.json')
-        logging.info(
-            f"Subsegmentation for embedding extraction:{scale_tag.replace('_',' ')}, {self.subsegments_manifest_path}"
-        )
+        logging.info(f"Subsegmentation for embedding extraction:{scale_tag.replace('_',' ')}, {self.subsegments_manifest_path}")
+        print("Legendary-run_segmentation subsegments_manifest_path:", self.subsegments_manifest_path, "speaker_dir: ", self._speaker_dir)
         self.subsegments_manifest_path = segments_manifest_to_subsegments_manifest(
             segments_manifest_file=self._speaker_manifest_path,
             subsegments_manifest_file=self.subsegments_manifest_path,
@@ -445,7 +444,6 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         print("Legendary-ClusteringDiarizer diarizer start running speech activity", self._diarizer_params.manifest_filepath)
         self._perform_speech_activity_detection()
         print("Legendary-ClusteringDiarizer diarizer Done speech acitivity detection and RTTM file created")
-        
         # Segmentation
         scales = self.multiscale_args_dict['scale_dict'].items()
         print("Legendary-ClusteringDiarizer diarizer starting segmentation in sacles: ", scales)
@@ -454,6 +452,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             print("Legendary segmentation epoch ",counter )
             counter += 1
             # Segmentation for the current scale (scale_idx)
+            print("\n==========================================================================================================\n") # this means i am focusing from this part
             print("Legendary-ClusteringDiarizer diarizer running segmentation on windows:", window, " shift: ", shift, " scale_tag: ",  f'_scale{scale_idx}')
             self._run_segmentation(window, shift, scale_tag=f'_scale{scale_idx}')
 
