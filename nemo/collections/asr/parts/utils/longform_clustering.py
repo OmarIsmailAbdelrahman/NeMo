@@ -393,7 +393,7 @@ class LongFormSpeakerClustering(torch.nn.Module):
         we need to use a wrapper function to handle the arguments.
         """
         if embeddings_per_chunk is not None and torch.max(multiscale_segment_counts) > embeddings_per_chunk:
-            print(f"Legendary-long_forward_infer embedding per chunk maximum multiscale_segment_counts: {torch.max(multiscale_segment_counts)}, embedding per chunk {embeddings_per_chunk}")
+            print(f"Legendary-forward_infer embedding per chunk maximum multiscale_segment_counts: {torch.max(multiscale_segment_counts)}, embedding per chunk {embeddings_per_chunk}")
             return self.long_forward_infer(
                 embeddings_in_scales=embeddings_in_scales,
                 timestamps_in_scales=timestamps_in_scales,
@@ -408,7 +408,7 @@ class LongFormSpeakerClustering(torch.nn.Module):
                 embeddings_per_chunk=embeddings_per_chunk,
             )
         else:
-            print(f"Legendary-long_forward_infer embedding per chunk maximum multiscale_segment_counts: {torch.max(multiscale_segment_counts)}, embedding per chunk {embeddings_per_chunk}")
+            print(f"Legendary-forward_infer embedding per chunk maximum multiscale_segment_counts: {torch.max(multiscale_segment_counts)}, embedding per chunk {embeddings_per_chunk}")
             cluster_labels = self.speaker_clustering.forward_infer(
                 embeddings_in_scales=embeddings_in_scales,
                 timestamps_in_scales=timestamps_in_scales,
@@ -421,6 +421,6 @@ class LongFormSpeakerClustering(torch.nn.Module):
                 sparse_search_volume=sparse_search_volume,
                 fixed_thres=fixed_thres,
             )
-            print(f"Legendary-long_forward_infer self.timestamps_in_scales {self.timestamps_in_scales} cluster_labels {cluster_labels}")
+            print(f"Legendary-forward_infer self.timestamps_in_scales {self.timestamps_in_scales} cluster_labels {cluster_labels}")
             self.timestamps_in_scales = self.speaker_clustering.timestamps_in_scales
             return cluster_labels
