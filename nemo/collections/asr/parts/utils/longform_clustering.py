@@ -368,6 +368,7 @@ class LongFormSpeakerClustering(torch.nn.Module):
             raise ValueError(
                 f"The number of raw input embeddings ({emb.shape[0]}) and the number of clustered labels ({Y_unpack.shape[0]}) do not match."
             )
+        print("Legendary-long_forward_infer over_cluster count ", overcluster_count, " Y_aggr :", Y_aggr )
         return Y_unpack
 
     def forward_infer(
