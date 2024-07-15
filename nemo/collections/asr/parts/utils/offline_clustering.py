@@ -1363,9 +1363,10 @@ class SpeakerClustering(torch.nn.Module):
             return torch.zeros((1,), dtype=torch.int64)
         elif emb.shape[0] <= max(enhanced_count_thres, self.min_samples_for_nmesc) and oracle_num_speakers < 0:
             est_num_of_spk_enhanced = getEnhancedSpeakerCount(emb=emb, cuda=self.cuda)
+            print(f"Legendary-NMESC-forward_infer enhanced_count_thres{enhanced_count_thres} min_samples_for_nmesc {self.min_samples_for_nmesc} oracle {oracle_num_speakers} est_num_of_spk_enhanced {est_num_of_spk_enhanced}")
         else:
             est_num_of_spk_enhanced = torch.tensor(-1)
-
+            print(f"Legendary-NMESC-forward_infer est_num_of_spk_enhanced {est_num_of_spk_enhanced}")
         if oracle_num_speakers > 0:
             max_num_speakers = oracle_num_speakers
 
