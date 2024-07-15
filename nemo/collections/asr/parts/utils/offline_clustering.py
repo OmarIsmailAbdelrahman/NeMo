@@ -1242,6 +1242,7 @@ class SpeakerClustering(torch.nn.Module):
             n_clusters=n_clusters, n_random_trials=kmeans_random_trials, cuda=self.cuda, device=self.device
         )
         Y = spectral_model.forward(affinity_mat)
+        print(f"Legendary-NMESC forward_unit_infer n_clusters: {n_clusters}, ")
         return Y
 
     def forward(self, param_dict: Dict[str, torch.Tensor]) -> torch.LongTensor:
@@ -1374,7 +1375,6 @@ class SpeakerClustering(torch.nn.Module):
             timestamps_in_scales=self.timestamps_in_scales,
             device=self.device,
         )
-
         return self.forward_unit_infer(
             mat=mat,
             oracle_num_speakers=oracle_num_speakers,
