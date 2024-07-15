@@ -105,7 +105,8 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
 
         # Clustering params
         self._cluster_params = self._diarizer_params.clustering.parameters
-
+        print(self._diarizer_params.clustering.parameters)
+        
     @classmethod
     def list_available_models(cls):
         pass
