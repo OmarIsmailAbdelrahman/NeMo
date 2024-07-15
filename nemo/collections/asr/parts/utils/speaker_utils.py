@@ -483,7 +483,8 @@ def perform_clustering(
             num_speakers = -1
 
         base_scale_idx = uniq_embs_and_timestamps['multiscale_segment_counts'].shape[0] - 1
-        print("Legendary-perform_clustering base_scale_idx",base_scale_idx)
+        print("Legendary-perform_clustering base_scale_idx",base_scale_idx, " oracle_num_speakers", int(num_speakers),"sparse_search_volume",int(clustering_params.sparse_search_volume))
+        
         cluster_labels = speaker_clustering.forward_infer(
             embeddings_in_scales=uniq_embs_and_timestamps['embeddings'],
             timestamps_in_scales=uniq_embs_and_timestamps['timestamps'],
@@ -496,7 +497,7 @@ def perform_clustering(
             chunk_cluster_count=clustering_params.get('chunk_cluster_count', None),
             embeddings_per_chunk=clustering_params.get('embeddings_per_chunk', None),
         )
-
+        
         del uniq_embs_and_timestamps
         if cuda:
             torch.cuda.empty_cache()
