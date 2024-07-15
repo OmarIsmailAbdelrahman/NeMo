@@ -484,7 +484,8 @@ def perform_clustering(
 
         base_scale_idx = uniq_embs_and_timestamps['multiscale_segment_counts'].shape[0] - 1
         print("Legendary-perform_clustering base_scale_idx",base_scale_idx, " oracle_num_speakers", int(num_speakers),"sparse_search_volume",int(clustering_params.sparse_search_volume))
-        
+
+        print(f"Legendar-perform_clustering multiscale input {uniq_embs_and_timestamps['multiscale_weights']} count {uniq_embs_and_timestamps['multiscale_segment_counts']}")
         cluster_labels = speaker_clustering.forward_infer(
             embeddings_in_scales=uniq_embs_and_timestamps['embeddings'],
             timestamps_in_scales=uniq_embs_and_timestamps['timestamps'],
