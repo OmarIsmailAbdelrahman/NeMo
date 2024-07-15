@@ -416,6 +416,7 @@ class MSDD_module(NeuralModule, Exportable):
         """
         conv_out = conv_module(conv_input)
         conv_out = conv_out.permute(0, 2, 1, 3) if not first_layer else conv_out
+        print(f"Legendary-msdd_diarizer-conv_forward conv_out {conv_out}")
         conv_out = conv_out.reshape(self.batch_size, self.length, self.cnn_output_ch, self.emb_dim)
         conv_out = conv_out.unsqueeze(2).flatten(0, 1)
         conv_out = bn_module(conv_out.permute(0, 3, 2, 1)).permute(0, 3, 2, 1)
