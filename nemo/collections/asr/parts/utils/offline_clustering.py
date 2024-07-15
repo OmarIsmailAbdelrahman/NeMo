@@ -1237,7 +1237,7 @@ class SpeakerClustering(torch.nn.Module):
             n_clusters = int(est_num_of_spk_enhanced.item())
         else:
             n_clusters = int(est_num_of_spk.item())
-
+        n_clusters = 5 
         spectral_model = SpectralClustering(
             n_clusters=n_clusters, n_random_trials=kmeans_random_trials, cuda=self.cuda, device=self.device
         )
