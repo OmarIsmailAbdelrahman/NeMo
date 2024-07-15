@@ -468,7 +468,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         ) # this just rearange the embedding of each scale with the correct scale index to help it access it easly
         
         print("\n==========================================================================================================\n") # this means i am focusing from this part
-
+        print("Legendary-ClusteringDiarizer diarizer configuration clustring parameters",self._diarizer_params.clustering.parameters, " configuration:", self._cfg)
         # Clustering
         all_reference, all_hypothesis = perform_clustering(
             embs_and_timestamps=embs_and_timestamps,
