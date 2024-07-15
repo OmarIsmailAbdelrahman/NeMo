@@ -367,6 +367,7 @@ class MSDD_module(NeuralModule, Exportable):
                 Weight vectors that determine the weight of each scale.
                 Shape: (batch_size, length, num_spks, emb_dim)
         """
+        print(f"Legendary-conv_scale_weights ms_avg_embs_perm {ms_avg_embs_perm.shape} ms_emb_seq_single {ms_emb_seq_single.shape}")
         ms_cnn_input_seq = torch.cat([ms_avg_embs_perm, ms_emb_seq_single], dim=2)
         ms_cnn_input_seq = ms_cnn_input_seq.unsqueeze(2).flatten(0, 1)
 
