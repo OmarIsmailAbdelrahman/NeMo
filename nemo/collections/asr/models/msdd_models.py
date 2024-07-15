@@ -737,6 +737,7 @@ class ClusterEmbedding(torch.nn.Module):
         for uniq_id, uniq_scale_mapping_dict in session_scale_mapping_dict.items():
             base_scale_clus_label = np.array([x[-1] for x in base_clus_label_dict[uniq_id]])
             all_scale_clus_label_dict[self.base_scale_index][uniq_id] = base_scale_clus_label
+            print(f"Legendarymsdd_models-assign_labels_to_longer_segs base_scale_clus_label {base_scale_clus_label} uniq_scale_mapping_dict {uniq_scale_mapping_dict}")
             for scale_index in range(self.scale_n - 1):
                 new_clus_label = []
                 assert (
@@ -745,6 +746,7 @@ class ClusterEmbedding(torch.nn.Module):
                 max_index = max(uniq_scale_mapping_dict[scale_index])
                 for seg_idx in range(max_index + 1):
                     if seg_idx in uniq_scale_mapping_dict[scale_index]:
+                        print(f"Legendarymsdd_models-assign_labels_to_longer_segs scale_index {scale_index} seg_idx {seg_idx}")
                         seg_clus_label = mode(base_scale_clus_label[uniq_scale_mapping_dict[scale_index] == seg_idx])
                     else:
                         seg_clus_label = 0 if len(new_clus_label) == 0 else new_clus_label[-1]
