@@ -479,7 +479,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             verbose=self.verbose,
         )
         logging.info("Outputs are saved in {} directory".format(os.path.abspath(self._diarizer_params.out_dir)))
-
+        print(f"Legendary-ClusteringDiarizer diarizer all_reference {all_reference} all_hypothesis {all_hypothesis}")
         # Scoring
         return score_labels(
             self.AUDIO_RTTM_MAP,
