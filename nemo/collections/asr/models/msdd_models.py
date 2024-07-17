@@ -1217,7 +1217,6 @@ class NeuralDiarizer(LightningModule):
                 print(f"Legendary-get_emb_clus_infer emb_sess_test_dict uniq_id {uniq_id} segment_name {segment_name} avg embedding size {segment_data['avg_embs'].size()}")
         for uniq_id, segments in cluster_embeddings.emb_seq_test.items():
             for segment_name, tensor in segments.items():
-                tensor_size = 
                 print(f"Legendary-get_emb_clus_infer emb_seq_test uniq_id {uniq_id} segment_name {segment_name} avg embedding size {tensor.size()}")
 
 
