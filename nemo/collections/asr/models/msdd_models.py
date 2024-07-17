@@ -1471,7 +1471,6 @@ class NeuralDiarizer(LightningModule):
         
         print(f"Legendary-run_overlap_aware_eval self.diar_eval_settings {self.diar_eval_settings}")
         for k, (collar, ignore_overlap) in enumerate(self.diar_eval_settings):
-            print(f"Legendary-run_overlap_aware_eval k {k} collar {collar} ignore_overlap {ignore_overlap}")
             all_reference, all_hypothesis = make_rttm_with_overlap(
                 manifest_filepath,
                 self.msdd_model.clus_test_label_dict,
@@ -1493,6 +1492,7 @@ class NeuralDiarizer(LightningModule):
                 verbose=self._cfg.verbose,
             )
             outputs.append(output)
+            print(f"Legendary-run_overlap_aware_eval k {k} collar {collar} ignore_overlap {ignore_overlap} output {output}")
         logging.info(f"  \n")
         return outputs
 
