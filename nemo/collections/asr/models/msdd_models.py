@@ -1240,7 +1240,7 @@ class NeuralDiarizer(LightningModule):
 
         print("Legendary thresholds",thresholds)
         
-        print("Legendary run_overlap_aware_eval")
+        print("Legendary run_overlap_aware_eval using thresholds {thresholds}")
         
         temp_value = [self.run_overlap_aware_eval(preds_list, threshold) for threshold in thresholds]
         print("Legenadary results",temp_value)
