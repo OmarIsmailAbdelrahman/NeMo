@@ -1211,10 +1211,15 @@ class NeuralDiarizer(LightningModule):
         self.msdd_model.emb_sess_test_dict = cluster_embeddings.emb_sess_test_dict
         self.msdd_model.clus_test_label_dict = cluster_embeddings.clus_test_label_dict
         self.msdd_model.emb_seq_test = cluster_embeddings.emb_seq_test
-        print(f"Legendary-get_emb_clus_infer emb_sess_test_dict {cluster_embeddings.emb_sess_test_dict} clus_test_label_dict {cluster_embeddings.clus_test_label_dict} emb_seq_test {cluster_embeddings.emb_seq_test}")
+        print(f"Legendary-get_emb_clus_infer  clus_test_label_dict contain the segments in all scales and thier label ")
         for uniq_id, segments in cluster_embeddings.emb_sess_test_dict.items():
             for segment_name, segment_data in segments.items():
-                print(f"Legendary-get_emb_clus_infer emb_sess_test_dict avg embedding size {segment_data['avg_embs'].size()}")
+                print(f"Legendary-get_emb_clus_infer emb_sess_test_dict uniq_id {uniq_id} segment_name {segment_name} avg embedding size {segment_data['avg_embs'].size()}")
+        for uniq_id, segments in cluster_embeddings.emb_seq_test.items():
+            for segment_name, tensor in segments.items():
+                tensor_size = 
+                print(f"Legendary-get_emb_clus_infer emb_seq_test uniq_id {uniq_id} segment_name {segment_name} avg embedding size {tensor.size()}")
+
 
 
     @torch.no_grad()
