@@ -1468,7 +1468,10 @@ class NeuralDiarizer(LightningModule):
         outputs = []
         manifest_filepath = self.msdd_model.cfg.test_ds.manifest_filepath
         rttm_map = audio_rttm_map(manifest_filepath)
+        
+        print(f"Legendary-run_overlap_aware_eval self.diar_eval_settings {self.diar_eval_settings}")
         for k, (collar, ignore_overlap) in enumerate(self.diar_eval_settings):
+            print(f"Legendary-run_overlap_aware_eval k {k} collar {collar} ignore_overlap {ignore_overlap}")
             all_reference, all_hypothesis = make_rttm_with_overlap(
                 manifest_filepath,
                 self.msdd_model.clus_test_label_dict,
