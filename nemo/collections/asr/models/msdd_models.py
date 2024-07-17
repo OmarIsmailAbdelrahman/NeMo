@@ -1212,6 +1212,10 @@ class NeuralDiarizer(LightningModule):
         self.msdd_model.clus_test_label_dict = cluster_embeddings.clus_test_label_dict
         self.msdd_model.emb_seq_test = cluster_embeddings.emb_seq_test
         print(f"Legendary-get_emb_clus_infer emb_sess_test_dict {cluster_embeddings.emb_sess_test_dict} clus_test_label_dict {cluster_embeddings.clus_test_label_dict} emb_seq_test {cluster_embeddings.emb_seq_test}")
+        for uniq_id, segments in emb_sess_test_dict.items():
+            for segment_name, segment_data in segments.items():
+                print(f"Legendary-get_emb_clus_infer emb_sess_test_dict avg embedding size {segment_data['avg_embs'].size()}")
+
 
     @torch.no_grad()
     def diarize(self) -> Optional[List[Optional[List[Tuple[DiarizationErrorRate, Dict]]]]]:
