@@ -1211,6 +1211,7 @@ class NeuralDiarizer(LightningModule):
         self.msdd_model.emb_sess_test_dict = cluster_embeddings.emb_sess_test_dict
         self.msdd_model.clus_test_label_dict = cluster_embeddings.clus_test_label_dict
         self.msdd_model.emb_seq_test = cluster_embeddings.emb_seq_test
+        print(f"Legendary-get_emb_clus_infer emb_sess_test_dict {cluster_embeddings.emb_sess_test_dict} clus_test_label_dict {cluster_embeddings.clus_test_label_dict} emb_seq_test {cluster_embeddings.emb_seq_test}")
 
     @torch.no_grad()
     def diarize(self) -> Optional[List[Optional[List[Tuple[DiarizationErrorRate, Dict]]]]]:
@@ -1227,9 +1228,9 @@ class NeuralDiarizer(LightningModule):
         
         self.msdd_model.pairwise_infer = True
         
-        print("Legendary emb_clus")
+        print(f"Legendary emb_clus") 
         
-        self.get_emb_clus_infer(self.clustering_embedding)
+        self.get_emb_clus_infer(self.clustering_embedding) # send ClusterEmbedding object as input, and send clustring results to msdd model
         
         print("Legendary run_pairwise_diarization")
         
@@ -1428,6 +1429,7 @@ class NeuralDiarizer(LightningModule):
         cumul_sample_count = [0]
         preds_list, targets_list, signal_lengths_list = [], [], []
         uniq_id_list = get_uniq_id_list_from_manifest(self.msdd_model.cfg.test_ds.manifest_filepath)
+        print(f"Legendary-run_pairwise_diarization uniq_id_list {uniq_id_list} out_rttm_dir {self.out_rttm_dir}")
         test_data_collection = [d for d in self.msdd_model.data_collection]
         for sidx, test_batch in enumerate(tqdm(self.msdd_model.test_dataloader())):
             signals, signal_lengths, _targets, emb_vectors = test_batch
