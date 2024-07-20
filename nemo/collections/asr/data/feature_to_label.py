@@ -361,7 +361,7 @@ class FeatureToLabelDataset(Dataset):
 
         t = torch.tensor(self.label2id[sample.label])
         tl = torch.tensor(1).long()
-
+        print(f"Legendary-FeatureToLabelDataset-get_item- f {f.shape} fl {fl.shape} t {tl.shape} t {tl.shape}")
         return f, fl, t, tl
 
     def _collate_fn(self, batch):
