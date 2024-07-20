@@ -334,6 +334,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
             return None
 
         dataset = feature_to_label_dataset.get_feature_label_dataset(config=config, augmentor=augmentor)
+        print(f"Legendary-classification_models-_setup_feature_label_dataloader dataset {dataset} augmentor {augmentor}")
         if 'vad_stream' in config and config['vad_stream']:
             collate_func = dataset._vad_segment_collate_fn
             batch_size = 1
