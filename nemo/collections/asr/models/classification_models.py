@@ -244,7 +244,6 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
             augmentor = process_augmentations(config['augmentor'])
         else:
             augmentor = None
-        print(f"Legendary-setup_data here")
 
         featurizer = WaveformFeaturizer(
             sample_rate=config['sample_rate'], int_values=config.get('int_values', False), augmentor=augmentor
@@ -296,7 +295,9 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 batch_size = 1
                 collate_fn = dataset.vad_frame_seq_collate_fn
             else:
+                print(f"Legendary-setup_data get_classification_label_dataset featurizer {featurizer}")
                 dataset = audio_to_label_dataset.get_classification_label_dataset(featurizer=featurizer, config=config)
+
                 batch_size = config['batch_size']
                 if hasattr(dataset, 'collate_fn'):
                     collate_fn = dataset.collate_fn
