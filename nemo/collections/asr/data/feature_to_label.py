@@ -231,6 +231,7 @@ class _FeatureSeqSpeakerLabelDataset(Dataset):
 
         t = torch.tensor(sample.seq_label).float()
         tl = torch.tensor(len(sample.seq_label)).long()
+        print(f"Legendary1-FeatureToLabelDataset-get_item- f {f.shape} fl {fl.shape} t {tl.shape} t {tl.shape}")
 
         return f, fl, t, tl
 
@@ -361,7 +362,7 @@ class FeatureToLabelDataset(Dataset):
 
         t = torch.tensor(self.label2id[sample.label])
         tl = torch.tensor(1).long()
-        print(f"Legendary-FeatureToLabelDataset-get_item- f {f.shape} fl {fl.shape} t {tl.shape} t {tl.shape}")
+        print(f"Legendary1-FeatureToLabelDataset-get_item- f {f.shape} fl {fl.shape} t {tl.shape} t {tl.shape}")
         return f, fl, t, tl
 
     def _collate_fn(self, batch):
@@ -490,6 +491,7 @@ class FeatureToMultiLabelDataset(Dataset):
 
         t = self._label_str_to_tensor(sample.label)
         tl = torch.tensor(t.size(0)).long()
+        print(f"Legendary1-FeatureToLabelDataset-get_item- f {f.shape} fl {fl.shape} t {tl.shape} t {tl.shape}")
 
         return f, fl, t, tl
 
