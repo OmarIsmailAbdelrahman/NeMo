@@ -222,8 +222,9 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         for i, test_batch in enumerate(tqdm(self._vad_model.test_dataloader(), desc='vad', leave=True, disable=not self.verbose)): # iterate on the data
             test_batch = [x.to(self._vad_model.device) for x in test_batch]
             for sad in test_batch:
-                print(f"heeeeeeeeeeeeeeeereeerere here test_batch {sad.shape}")
-            print(f"heeeeeeeeeeeeeeeereeerere here test_batch len {len(test_batch)}")
+                print(f"test_batch iterational size {sad.shape}")
+            print(f"test_batch length {len(test_batch)} test_batch[1] {test_batch[1]} shape {test_batch[1].shape}")
+            
             with autocast():
                 log_probs = self._vad_model(input_signal=test_batch[0], input_signal_length=test_batch[1])
                 probs = torch.softmax(log_probs, dim=-1)
