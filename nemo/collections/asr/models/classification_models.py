@@ -265,7 +265,6 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 logging.warning("VAD inference does not support tarred dataset now")
                 return None
 
-            print(f"Legendary-_setup_dataloader_from_config-get_tarred_classification_label_dataset {featurizer}")
             shuffle_n = config.get('shuffle_n', 4 * config['batch_size']) if shuffle else 0
             dataset = audio_to_label_dataset.get_tarred_classification_label_dataset(
                 featurizer=featurizer,
@@ -286,20 +285,20 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 collate_fn = dataset.datasets[0].datasets[0].collate_fn
 
         else:
-            print(f"legendary hereherhreherhreherh")
             if 'manifest_filepath' in config and config['manifest_filepath'] is None:
                 logging.warning(f"Could not load dataset as `manifest_filepath` is None. Provided config : {config}")
                 return None
 
             if 'vad_stream' in config and config['vad_stream']:
                 logging.info("Perform streaming frame-level VAD")
+                print(f"Legendary-setup_data get_speech_label_dataset featurizer {featurizer} {config}")
+
                 dataset = audio_to_label_dataset.get_speech_label_dataset(featurizer=featurizer, config=config)
                 batch_size = 1
                 collate_fn = dataset.vad_frame_seq_collate_fn
             else:
                 print(f"Legendary-setup_data get_classification_label_dataset featurizer {featurizer}")
                 dataset = audio_to_label_dataset.get_classification_label_dataset(featurizer=featurizer, config=config)
-
                 batch_size = config['batch_size']
                 if hasattr(dataset, 'collate_fn'):
                     collate_fn = dataset.collate_fn
