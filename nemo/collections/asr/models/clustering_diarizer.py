@@ -225,6 +225,8 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             with autocast():
                 log_probs = self._vad_model(input_signal=test_batch[0], input_signal_length=test_batch[1])
                 probs = torch.softmax(log_probs, dim=-1)
+                print(f"log_probs {log_probs} probs {probs}")
+                print(f"log_probs shape {log_probs.shape} probs shape{probs.shape}")
                 pred = probs[:, 1]
                 if status[i] == 'start':
                     to_save = pred[:-trunc]
