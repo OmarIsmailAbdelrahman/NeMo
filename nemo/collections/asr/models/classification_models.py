@@ -244,6 +244,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
             augmentor = process_augmentations(config['augmentor'])
         else:
             augmentor = None
+        print(f"Legendary-setup_data here")
 
         featurizer = WaveformFeaturizer(
             sample_rate=config['sample_rate'], int_values=config.get('int_values', False), augmentor=augmentor
@@ -305,6 +306,8 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 else:
                     # support datasets that are lists of lists
                     collate_fn = dataset.datasets[0].datasets[0].collate_fn
+                    
+        print(f"Legendary-classification_models-_setup_feature_label_dataloader dataset {featurizer} augmentor {augmentor}")
 
         return torch.utils.data.DataLoader(
             dataset=dataset,
