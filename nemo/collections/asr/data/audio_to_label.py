@@ -441,8 +441,8 @@ class AudioToSpeechLabelDataset(_AudioLabelDataset):
         self.window_length_in_sec = window_length_in_sec
         self.shift_length_in_sec = shift_length_in_sec
         self.normalize_audio = normalize_audio
-        print(f"Legenadry-AudioToSpeechLabelDataset self.window_length_in_sec{self.window_length_in_sec} self.shift_length_in_sec {self.shift_length_in_sec} self.normalize_audio {self.normalize_audio} min_duration {min_duration}")
-        print(f"max_duration {max_duration} manifest_filepath {manifest_filepath} labels{labels}featurizer{featurizer}")
+        print(f"Legenadry-AudioToSpeechLabelDataset self.window_length_in_sec {self.window_length_in_sec} self.shift_length_in_sec {self.shift_length_in_sec} self.normalize_audio {self.normalize_audio} min_duration {min_duration}")
+        print(f"max_duration {max_duration} manifest_filepath {manifest_filepath} labels {labels} featurizer {featurizer}")
         logging.debug("Window/slice length considered for collate func is {}".format(self.window_length_in_sec))
         logging.debug("Shift length considered for collate func is {}".format(self.shift_length_in_sec))
 
