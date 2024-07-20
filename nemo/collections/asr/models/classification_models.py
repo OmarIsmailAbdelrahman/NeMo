@@ -286,6 +286,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 collate_fn = dataset.datasets[0].datasets[0].collate_fn
 
         else:
+            print(f"legendary hereherhreherhreherh")
             if 'manifest_filepath' in config and config['manifest_filepath'] is None:
                 logging.warning(f"Could not load dataset as `manifest_filepath` is None. Provided config : {config}")
                 return None
