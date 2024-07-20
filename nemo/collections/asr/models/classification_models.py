@@ -226,6 +226,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
         self._update_dataset_config(dataset_name='test', config=test_data_config)
 
         if use_feat and hasattr(self, '_setup_feature_label_dataloader'):
+            print(f"Legendary-setup_data here")
             self._test_dl = self._setup_feature_label_dataloader(config=DictConfig(test_data_config))
         else:
             self._test_dl = self._setup_dataloader_from_config(config=DictConfig(test_data_config))
