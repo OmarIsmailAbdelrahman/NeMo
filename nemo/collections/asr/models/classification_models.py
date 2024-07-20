@@ -291,7 +291,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
 
             if 'vad_stream' in config and config['vad_stream']:
                 logging.info("Perform streaming frame-level VAD")
-                print(f"Legendary-setup_data get_speech_label_dataset featurizer {featurizer} {config}")
+                print(f"Legendary-setup_data get_speech_label_dataset featurizer {config} {featurizer} {config}")
 
                 dataset = audio_to_label_dataset.get_speech_label_dataset(featurizer=featurizer, config=config)
                 batch_size = 1
