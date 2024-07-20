@@ -1128,6 +1128,7 @@ def generate_vad_frame_pred(
     status = get_vad_stream_status(data)
     for i, test_batch in enumerate(tqdm(vad_model.test_dataloader(), total=len(vad_model.test_dataloader()))):
         test_batch = [x.to(vad_model.device) for x in test_batch]
+        print(f"heeeeeeeeeeeeeeeereeerere here np.array(test_batch).shape")
         with autocast():
             if use_feat:
                 log_probs = vad_model(processed_signal=test_batch[0], processed_signal_length=test_batch[1])
