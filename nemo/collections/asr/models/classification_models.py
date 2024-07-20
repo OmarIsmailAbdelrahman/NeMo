@@ -265,6 +265,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 logging.warning("VAD inference does not support tarred dataset now")
                 return None
 
+            print(f"Legendary-_setup_dataloader_from_config-get_tarred_classification_label_dataset {featurizer}")
             shuffle_n = config.get('shuffle_n', 4 * config['batch_size']) if shuffle else 0
             dataset = audio_to_label_dataset.get_tarred_classification_label_dataset(
                 featurizer=featurizer,
