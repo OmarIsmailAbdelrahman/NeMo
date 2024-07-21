@@ -239,7 +239,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
         OmegaConf.set_struct(config, False)
         config.is_regression_task = self.is_regression_task
         OmegaConf.set_struct(config, True)
-
+        print(f"Legendary vad config")
         if 'augmentor' in config:
             augmentor = process_augmentations(config['augmentor'])
         else:
@@ -249,7 +249,6 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
             sample_rate=config['sample_rate'], int_values=config.get('int_values', False), augmentor=augmentor
         )
         shuffle = config['shuffle']
-
         # Instantiate tarred dataset loader or normal dataset loader
         if config.get('is_tarred', False):
             if ('tarred_audio_filepaths' in config and config['tarred_audio_filepaths'] is None) or (
@@ -324,6 +323,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
         OmegaConf.set_struct(config, False)
         config.is_regression_task = self.is_regression_task
         OmegaConf.set_struct(config, True)
+        print(f"Legendary vad config")
 
         if 'augmentor' in config:
             augmentor = process_augmentations(config['augmentor'])
