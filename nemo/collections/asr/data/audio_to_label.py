@@ -351,7 +351,7 @@ target_label_n, "offset": offset_in_sec_n}
 
         tl = torch.tensor(1).long()  # For compatibility with collate_fn used later
         print(f"\n Legendary-_AudioLabelDataset f {f} {f.shape}  fl {fl} {fl.shape}   t {t} {t.shape}   tl {tl} {tl.shape}")
-        print(f" featurizer {featurizer} trim {trim} channel_selector {channel_selector} is_regression_task {is_regression_task} \n")
+        print(f" featurizer {self.featurizer} trim {self.trim} channel_selector {self.channel_selector} is_regression_task {self.is_regression_task} \n")
         return f, fl, t, tl
 
 
