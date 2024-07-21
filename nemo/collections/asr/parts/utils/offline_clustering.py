@@ -676,7 +676,7 @@ def getEnhancedSpeakerCount(
     #     comp_est_num_of_spk = torch.tensor(max(int(torch.tensor(est_num_of_spk_list).float().mean().item()), 1))
     #     print(f"Legendary-NMESC-getEnhancedSpeakerCount Same Error of speaker clustring <================================")
     # #comp_est_num_of_spk = torch.tensor(max(int(torch.tensor(est_num_of_spk_list).float().mean().item()), 1))                  
-    # print(f"Legendary-NMESC-getEnhancedSpeakerCount anchor_spk_n {anchor_spk_n} anchor_sample_n {anchor_sample_n} mat.shape {mat.shape} emb.shape {emb.shape} comp_est_num_of_spk {comp_est_num_of_spk}")
+    print(f"Legendary-NMESC-getEnhancedSpeakerCount anchor_spk_n {anchor_spk_n} anchor_sample_n {anchor_sample_n} mat.shape {mat.shape} emb.shape {emb.shape} comp_est_num_of_spk {comp_est_num_of_spk}")
     # print(f"torch.tensor(est_num_of_spk_list).float().mean().item() {torch.tensor(est_num_of_spk_list).float().mean().item()}")
     return comp_est_num_of_spk
 
