@@ -239,7 +239,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
         OmegaConf.set_struct(config, False)
         config.is_regression_task = self.is_regression_task
         OmegaConf.set_struct(config, True)
-        print(f"Legendary vad config")
+        print(f"Legendary vad config {config}")
         if 'augmentor' in config:
             augmentor = process_augmentations(config['augmentor'])
         else:
