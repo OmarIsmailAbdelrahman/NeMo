@@ -261,7 +261,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 )
                 return None
             
-            if 'vad_stream' in config and config['vad_stream'] and False:
+            if 'vad_stream' in config and config['vad_stream']:
                 logging.warning("VAD inference does not support tarred dataset now")
                 return None
 
