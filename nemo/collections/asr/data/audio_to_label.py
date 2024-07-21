@@ -300,7 +300,8 @@ target_label_n, "offset": offset_in_sec_n}
         self.trim = trim
         self.channel_selector = channel_selector
         self.is_regression_task = is_regression_task
-
+        
+        
         if not is_regression_task:
             self.labels = labels if labels else self.collection.uniq_labels
             self.num_classes = len(self.labels) if self.labels is not None else 1
@@ -349,7 +350,8 @@ target_label_n, "offset": offset_in_sec_n}
             t = torch.tensor(sample.label).float()
 
         tl = torch.tensor(1).long()  # For compatibility with collate_fn used later
-        print(f"\n Legendary-_AudioLabelDataset f {f} {f.shape}  fl {fl} {fl.shape}   t {t} {t.shape}   tl {tl} {tl.shape} \n")
+        print(f"\n Legendary-_AudioLabelDataset f {f} {f.shape}  fl {fl} {fl.shape}   t {t} {t.shape}   tl {tl} {tl.shape}")
+        print(f" featurizer {featurizer} trim {trim} channel_selector {channel_selector} is_regression_task {is_regression_task} \n")
         return f, fl, t, tl
 
 
