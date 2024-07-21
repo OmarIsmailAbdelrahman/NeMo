@@ -289,7 +289,7 @@ class _EncDecBaseModel(ASRModel, ExportableEncDecModel, TranscriptionMixin):
                 logging.warning(f"Could not load dataset as `manifest_filepath` is None. Provided config : {config}")
                 return None
 
-            if 'vad_stream' in config and config['vad_stream']:
+            if 'vad_stream' in config and config['vad_stream'] and False:
                 logging.info("Perform streaming frame-level VAD")
                 print(f"Legendary-setup_data get_speech_label_dataset featurizer {config} {featurizer} {config}")
 
