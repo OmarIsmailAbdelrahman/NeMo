@@ -239,6 +239,8 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
                     to_save = pred[trunc_l:]
                 else:
                     to_save = pred
+                print(f"Legendary removeeee test_batch[0] {test_batch[0]} test_batch[1] {test_batch[1]} log_probs {log_probs} probs {probs} pred {pred}")
+
                 all_len += len(to_save)
                 outpath = os.path.join(self._vad_dir, data[i] + ".frame")
                 with open(outpath, "a", encoding='utf-8') as fout:
