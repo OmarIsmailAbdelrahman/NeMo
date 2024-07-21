@@ -445,16 +445,18 @@ class EncDecSpeakerLabelModel(ModelPT, ExportableEncDecModel, VerificationMixin)
         return self.multi_evaluation_epoch_end(outputs, dataloader_idx, 'test')
 
     @torch.no_grad()
-    def infer_file(self, path2audio_file):
+    def infer_file(self, segment):
         """
         Args:
-            path2audio_file: path to an audio wav file
+            segment: array that represent a segment of audio
 
         Returns:
             emb: speaker embeddings (Audio representations)
             logits: logits corresponding of final layer
         """
-        audio, sr = sf.read(path2audio_file)
+        #audio, sr = sf.read(path2audio_file)
+        sr = 16000
+        audio = segment
         target_sr = self._cfg.train_ds.get('sample_rate', 16000)
         if sr != target_sr:
             audio = librosa.core.resample(audio, orig_sr=sr, target_sr=target_sr)
