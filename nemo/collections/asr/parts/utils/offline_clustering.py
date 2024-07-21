@@ -35,7 +35,7 @@ from typing import Dict, List, Tuple
 
 import torch
 from torch.linalg import eigh, eigvalsh
-
+import numpy as np
 
 def cos_similarity(emb_a: torch.Tensor, emb_b: torch.Tensor, eps=torch.tensor(3.5e-4)) -> torch.Tensor:
     """
@@ -675,8 +675,10 @@ def getEnhancedSpeakerCount(
     # if comp_est_num_of_spk == 1:
     #     comp_est_num_of_spk = torch.tensor(max(int(torch.tensor(est_num_of_spk_list).float().mean().item()), 1))
     #     print(f"Legendary-NMESC-getEnhancedSpeakerCount Same Error of speaker clustring <================================")
-    # #comp_est_num_of_spk = torch.tensor(max(int(torch.tensor(est_num_of_spk_list).float().mean().item()), 1))                  
-    print(f"Legendary-NMESC-getEnhancedSpeakerCount anchor_spk_n {anchor_spk_n} anchor_sample_n {anchor_sample_n} mat.shape {mat.shape} emb.shape {emb.shape} comp_est_num_of_spk {comp_est_num_of_spk}")
+    # #comp_est_num_of_spk = torch.tensor(max(int(torch.tensor(est_num_of_spk_list).float().mean().item()), 1))      
+    self.prediect_init_clusters.append(comp_est_num_of_spk)
+
+    print(f"Legendary-NMESC-getEnhancedSpeakerCount anchor_spk_n {anchor_spk_n} anchor_sample_n {anchor_sample_n} mat.shape {mat.shape} emb.shape {emb.shape} comp_est_num_of_spk {comp_est_num_of_spk} mean number of pred {np.mean(np.array(self.prediect_init_clusters}))")
     # print(f"torch.tensor(est_num_of_spk_list).float().mean().item() {torch.tensor(est_num_of_spk_list).float().mean().item()}")
     return comp_est_num_of_spk
 
@@ -1171,7 +1173,7 @@ class SpeakerClustering(torch.nn.Module):
         self.embeddings_in_scales: List[torch.Tensor] = [torch.Tensor(0)]
         self.timestamps_in_scales: List[torch.Tensor] = [torch.Tensor(0)]
         self.device = torch.device("cuda") if self.cuda else torch.device("cpu")
-
+        self.prediect_init_clusters = [] # Legendary remove later 
     def forward_unit_infer(
         self,
         mat: torch.Tensor,
