@@ -652,10 +652,11 @@ def getEnhancedSpeakerCount(
             The estimated number of speakers. `anchor_spk_n` is subtracted from the estimated
             number of speakers to factor out the dummy speaker embedding vectors.
     """
+    anchor_spk_n = 1
     est_num_of_spk_list: List[int] = []
     for seed in range(random_test_count):
         torch.manual_seed(seed)
-        emb_aug = addAnchorEmb(emb, anchor_sample_n, anchor_spk_n, sigma)
+        emb_aug = addAnchorEmb(emb, anchor_sample_n, anchor_spk_n, sigma) # edited here
         mat = getCosAffinityMatrix(emb_aug)
         nmesc = NMESC(
             mat,
