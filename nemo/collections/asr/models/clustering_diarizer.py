@@ -463,6 +463,19 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         for file in all_hypothesis:
             print(f" all reference {file[0]} => {file[1].labels()} size {len(file[1].labels())}")
 
+        reference_dict = {file[0]: len(file[1].labels()) for file in all_reference}
+        hypothesis_dict = {file[0]: len(file[1].labels()) for file in all_hypothesis}
+        
+        for file_name in reference_dict:
+            if file_name in hypothesis_dict:
+                reference_size = reference_dict[file_name]
+                hypothesis_size = hypothesis_dict[file_name]
+                difference = reference_size - hypothesis_size
+                print(f"File: {file_name}")
+                print(f"Reference size: {reference_size}")
+                print(f"Hypothesis size: {hypothesis_size}")
+                print(f"Difference: {difference}")
+
         logging.info("Outputs are saved in {} directory".format(os.path.abspath(self._diarizer_params.out_dir)))
 
         # Scoring
