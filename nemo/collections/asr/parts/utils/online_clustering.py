@@ -488,7 +488,7 @@ def get_first_arg_index(mat: torch.Tensor, label: int) -> int:
     return int(torch.where(mat == label)[0][0])
 
 
-class OnlineSpeakerClustering(torch.nn.Module):
+class NemoOnlineSpeakerClustering(torch.nn.Module):
     """
     Online clustering method for speaker diarization based on cosine similarity.
 
