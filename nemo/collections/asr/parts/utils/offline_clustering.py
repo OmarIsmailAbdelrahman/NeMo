@@ -1369,7 +1369,7 @@ class SpeakerClustering(torch.nn.Module):
         emb = self.embeddings_in_scales[-1]
 
         # Cases for extreamly short sessions
-        self.number_of_embedding.append(emb.shape[0]})
+        self.number_of_embedding.append(emb.shape[0])
         print(f"number of embedding {emb.shape[0]} with mean {np.mean(np.array(self.number_of_embedding))}")
 
         if emb.shape[0] == 1:
