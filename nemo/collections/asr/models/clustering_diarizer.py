@@ -458,6 +458,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             device=self._speaker_model.device,
             verbose=self.verbose,
         )
+        print(f"all_reference {all_reference} , all_hypothesis {all_hypothesis})
         logging.info("Outputs are saved in {} directory".format(os.path.abspath(self._diarizer_params.out_dir)))
 
         # Scoring
