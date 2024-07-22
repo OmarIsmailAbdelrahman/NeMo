@@ -653,7 +653,7 @@ def getEnhancedSpeakerCount(
             The estimated number of speakers. `anchor_spk_n` is subtracted from the estimated
             number of speakers to factor out the dummy speaker embedding vectors.
     """
-    anchor_spk_n = 5
+    anchor_spk_n = 4
     est_num_of_spk_list: List[int] = []
     for seed in range(random_test_count):
         torch.manual_seed(seed)
