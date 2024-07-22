@@ -1141,7 +1141,6 @@ class SpeakerClustering(torch.nn.Module):
         maj_vote_spk_count: bool = False,
         parallelism: bool = False,
         cuda: bool = False,
-        self.number_of_embedding = [] # remove later
     ):
         """
         Clustering method for speaker diarization based on cosine similarity.
@@ -1175,6 +1174,8 @@ class SpeakerClustering(torch.nn.Module):
         self.embeddings_in_scales: List[torch.Tensor] = [torch.Tensor(0)]
         self.timestamps_in_scales: List[torch.Tensor] = [torch.Tensor(0)]
         self.device = torch.device("cuda") if self.cuda else torch.device("cpu")
+        self.number_of_embedding = [] # remove later
+
     def forward_unit_infer(
         self,
         mat: torch.Tensor,
