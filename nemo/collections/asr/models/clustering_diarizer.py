@@ -470,7 +470,7 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
         size = 0
         for file_name in reference_dict:
             if file_name in hypothesis_dict:
-                difference += reference_dict[file_name] - hypothesis_dict[file_name]
+                difference += abs(reference_dict[file_name] - hypothesis_dict[file_name])
                 size += 1
         print(f"Legendary mean error of number of clusters {difference/size}")
         
