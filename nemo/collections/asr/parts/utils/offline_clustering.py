@@ -1372,11 +1372,11 @@ class SpeakerClustering(torch.nn.Module):
         # Cases for extreamly short sessions
         self.number_of_embedding.append(emb.shape[0])
         print(f"number of embedding {emb.shape[0]} with mean {np.mean(np.array(self.number_of_embedding))}")
-
+        enhanced_count_thres = 0 # remove later
         if emb.shape[0] == 1:
             return torch.zeros((1,), dtype=torch.int64)
         elif emb.shape[0] <= max(enhanced_count_thres, self.min_samples_for_nmesc) and oracle_num_speakers < 0:
-            print(f"Legendary Condition for getEnhancedSpeakerCount {emb.shape[0]}<=max({enhanced_count_thres},{self.min_samples_for_nmesc})")
+            print(f"Legendary Condition for enhanced_count_thres {emb.shape[0]}<=max({enhanced_count_thres},{self.min_samples_for_nmesc})")
             est_num_of_spk_enhanced = getEnhancedSpeakerCount(emb=emb, cuda=self.cuda)
         else:
             est_num_of_spk_enhanced = torch.tensor(-1)
