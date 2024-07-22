@@ -458,24 +458,22 @@ class ClusteringDiarizer(torch.nn.Module, Model, DiarizationMixin):
             device=self._speaker_model.device,
             verbose=self.verbose,
         )
-        for file in all_reference:
-            print(f" all reference {file[0]} => {file[1].labels()} size {len(file[1].labels())}")
-        for file in all_hypothesis:
-            print(f" all reference {file[0]} => {file[1].labels()} size {len(file[1].labels())}")
-
+        # for file in all_reference:
+        #     print(f" all reference {file[0]} => {file[1].labels()} size {len(file[1].labels())}")
+        # for file in all_hypothesis:
+        #     print(f" all reference {file[0]} => {file[1].labels()} size {len(file[1].labels())}")
+        # this code estimate the error of number of clusteres 
         reference_dict = {file[0]: len(file[1].labels()) for file in all_reference}
         hypothesis_dict = {file[0]: len(file[1].labels()) for file in all_hypothesis}
-        
+
+        difference = 0 
+        size = 0
         for file_name in reference_dict:
             if file_name in hypothesis_dict:
-                reference_size = reference_dict[file_name]
-                hypothesis_size = hypothesis_dict[file_name]
-                difference = reference_size - hypothesis_size
-                print(f"File: {file_name}")
-                print(f"Reference size: {reference_size}")
-                print(f"Hypothesis size: {hypothesis_size}")
-                print(f"Difference: {difference}")
-
+                difference += reference_dict[file_name] - hypothesis_dict[file_name]
+                size += 1
+        print(f"Legendary mean error of number of clusters {difference/size}")
+        
         logging.info("Outputs are saved in {} directory".format(os.path.abspath(self._diarizer_params.out_dir)))
 
         # Scoring
