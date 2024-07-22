@@ -1141,6 +1141,7 @@ class SpeakerClustering(torch.nn.Module):
         maj_vote_spk_count: bool = False,
         parallelism: bool = False,
         cuda: bool = False,
+        self.number_of_embedding = [] # remove later
     ):
         """
         Clustering method for speaker diarization based on cosine similarity.
@@ -1368,6 +1369,9 @@ class SpeakerClustering(torch.nn.Module):
         emb = self.embeddings_in_scales[-1]
 
         # Cases for extreamly short sessions
+        self.number_of_embedding.append(emb.shape[0]})
+        print(f"number of embedding {emb.shape[0]} with mean {np.mean(np.array(self.number_of_embedding))}")
+
         if emb.shape[0] == 1:
             return torch.zeros((1,), dtype=torch.int64)
         elif emb.shape[0] <= max(enhanced_count_thres, self.min_samples_for_nmesc) and oracle_num_speakers < 0:
