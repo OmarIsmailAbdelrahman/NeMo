@@ -485,7 +485,8 @@ def perform_clustering(
         base_scale_idx = uniq_embs_and_timestamps['multiscale_segment_counts'].shape[0] - 1
         print("Legendary-perform_clustering base_scale_idx",base_scale_idx, " oracle_num_speakers", int(num_speakers),"sparse_search_volume",int(clustering_params.sparse_search_volume))
 
-        print(f"Legendar-perform_clustering multiscale input {uniq_embs_and_timestamps['multiscale_weights']} count {uniq_embs_and_timestamps['multiscale_segment_counts']}")
+        print(f"Legendar-perform_clustering multiscale input {uniq_embs_and_timestamps['multiscale_weights']} count {uniq_embs_and_timestamps['multiscale_segment_counts']} timestamps {uniq_embs_and_timestamps['timestamps']}")
+        print(f"Legendar-perform_clustering number of speakers {int(num_speakers)} sparse search {int(clustering_params.sparse_search_volume)} chunck cluster count {clustering_params.get('chunk_cluster_count', None)} embedding per chunck {clustering_params.get('embeddings_per_chunk', None)}")
         cluster_labels = speaker_clustering.forward_infer(
             embeddings_in_scales=uniq_embs_and_timestamps['embeddings'],
             timestamps_in_scales=uniq_embs_and_timestamps['timestamps'],
