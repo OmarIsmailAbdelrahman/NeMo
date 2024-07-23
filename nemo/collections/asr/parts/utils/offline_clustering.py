@@ -525,7 +525,8 @@ def getMultiScaleCosAffinityMatrix(
         repeat_list = getRepeatedList(mapping_argmat, torch.tensor(score_mat_torch.shape[0])).to(device)
         repeated_tensor_0 = torch.repeat_interleave(score_mat_torch, repeats=repeat_list, dim=0).to(device)
         repeated_tensor_1 = torch.repeat_interleave(repeated_tensor_0, repeats=repeat_list, dim=1).to(device)
-        print(f"Legendary-getMultiScaleCosAffinityMatrix scale_list {scale_list} emb_t {emb_t.shape} scale_idx {scale_idx} embeddings_in_scales {embeddings_in_scales.items()}  fused_sim_d shape {fused_sim_d.shape}")
+        print(f"Legendary-getMultiScaleCosAffinityMatrix scale_list {scale_list} emb_t {emb_t.shape} scale_idx {scale_idx} fused_sim_d shape {fused_sim_d.shape} repeated_tensor_1 {repeated_tensor_1.shape} ")
+        print(f" multiscale_weights[scale_idx] {multiscale_weights[scale_idx].shape}")
         fused_sim_d += multiscale_weights[scale_idx] * repeated_tensor_1
     return fused_sim_d
 
